@@ -1,12 +1,226 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trabalho Diversidade</title>
-    <link rel="stylesheet" href="output.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Histórias que Mudaram o Mundo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<link rel="shortcut icon" href="img/icons8-punho-fechado-32.png" type="image/x-icon">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    fontFamily: { sans: ['Montserrat', 'sans-serif'], serif: ['"Playfair Display"', 'serif'] },
+    colors: { vinho: '#8b1e1e', ouro: '#d6ad38', papel: '#f4f1ea' }
+  } }
+}
+</script>
 </head>
-<body>
-    <h1></h1>
+
+<body class="scroll-smooth font-sans bg-papel text-[#1b1b1b]">
+
+<header class="bg-gradient-to-br from-[#111] to-[#7a1717] text-white text-center px-5 py-[70px]">
+  <h1 class="font-serif font-bold text-[clamp(2.5rem,6vw,4.5rem)] mb-4">
+    Histórias que <span class="text-ouro">Mudaram o Mundo</span>
+  </h1>
+  <p class="max-w-[750px] mx-auto leading-8 text-gray-200">
+    Escolha uma personalidade ou movimento para conhecer sua trajetória,
+    suas lutas, suas ideias e seu legado para a sociedade.
+  </p>
+</header>
+
+<section id="escolha" class="px-[8%] py-16">
+  <div class="text-center mb-10">
+    <h2 class="font-serif font-bold text-4xl text-vinho">Quem você deseja conhecer?</h2>
+    <p class="mt-3 text-gray-600">Clique em uma personalidade para descobrir sua história.</p>
+  </div>
+  <div id="cards" class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-6"></div>
+</section>
+
+<section id="historia" class="hidden bg-white px-[8%] py-16 min-h-screen">
+  <div class="max-w-[1000px] mx-auto">
+    <h2 id="nome" class="font-serif font-bold text-4xl sm:text-5xl text-vinho mb-2.5"></h2>
+    <span id="periodo" class="inline-block bg-[#111] text-white px-[18px] py-2 rounded-full mb-8 font-bold"></span>
+    <div id="conteudo"></div>
+    <button onclick="voltar()" class="mt-8 bg-vinho hover:bg-[#111] text-white font-bold px-6 py-4 rounded-md transition-colors duration-300">
+      ← ESCOLHER OUTRA PERSONALIDADE
+    </button>
+  </div>
+</section>
+
+<footer class="text-center bg-[#111] text-white p-8">
+  <p>📚 Histórias que Mudaram o Mundo</p>
+  <p>Projeto educativo sobre luta, cultura, democracia e transformação social.</p>
+</footer>
+
+<script>
+const historias = {
+  malcolm: {
+    nome: "Malcolm X", periodo: "1925 – 1965",
+    resumo: "Luta negra e direitos humanos.",
+    img: "https://www.schoolcraft.edu/wp-content/uploads/2022/02/Malcolm-X-photo-for-February-15.jpg",
+    texto: [
+      "Malcolm X, nascido Malcolm Little, foi um dos mais importantes líderes da luta da população negra nos Estados Unidos. Sua infância foi marcada pelo racismo e pela violência contra sua família.",
+      "Após passar um período na prisão, Malcolm iniciou um intenso processo de educação e transformação. Estudou história e passou a compreender profundamente o racismo existente na sociedade norte-americana.",
+      "Tornou-se uma das principais vozes da consciência negra, defendendo o orgulho da identidade negra, a autonomia da população negra e os direitos humanos."
+    ],
+    legado: ["Símbolo da consciência negra.", "Defesa dos direitos humanos.", "Inspiração para movimentos antirracistas."]
+  },
+  marighella: {
+    nome: "Carlos Marighella", periodo: "1911 – 1969",
+    resumo: "Resistência à ditadura brasileira.",
+    img: "https://upload.wikimedia.org/wikipedia/commons/2/2b/Marighella_foto3_deputado_46-47_apeerj_%28cropped%29.jpg",
+    texto: [
+      "Carlos Marighella nasceu em Salvador, na Bahia, e foi uma importante figura política brasileira. Desde jovem participou de movimentos políticos e aproximou-se das ideias comunistas.",
+      "Durante a ditadura militar brasileira, iniciada em 1964, tornou-se um dos principais opositores do regime e participou da organização da resistência política.",
+      "Marighella foi morto em 1969 durante uma operação da repressão. Sua trajetória permanece importante nos debates sobre ditadura, democracia e resistência política no Brasil."
+    ],
+    legado: ["Símbolo da resistência à ditadura militar.", "Importante figura da história política brasileira.", "Inspiração para estudos sobre democracia."]
+  },
+  racionais: {
+    nome: "Racionais MC's", periodo: "1988 – Atualidade",
+    resumo: "A voz da periferia e do rap brasileiro.",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTx1txudvX1TrxK4KjxY8ueghIpr-InRw-7WN_eahgjYtaBLCxfkQWjsVo&s=10",
+    texto: [
+      "Os Racionais MC's surgiram em São Paulo e se tornaram um dos grupos mais importantes da história da música brasileira.",
+      "Formado por Mano Brown, Ice Blue, Edi Rock e KL Jay, o grupo utilizou o rap como instrumento para falar sobre racismo, desigualdade, violência e a realidade das periferias.",
+      "O grupo deu visibilidade a experiências que frequentemente eram ignoradas pela sociedade e pela mídia tradicional."
+    ],
+    legado: ["Revolucionou o rap brasileiro.", "Deu voz à periferia.", "Transformou a música em instrumento de crítica social."]
+  },
+  angela: {
+    nome: "Angela Davis", periodo: "1944 – Atualidade",
+    resumo: "Feminismo, racismo e justiça social.",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Angela_Davis_in_a_half-length_portrait_by_Bernard_Gotfryd_-_crop.jpg/250px-Angela_Davis_in_a_half-length_portrait_by_Bernard_Gotfryd_-_crop.jpg",
+    texto: [
+      "Angela Davis é filósofa, professora e uma das mais importantes ativistas políticas dos Estados Unidos.",
+      "Sua trajetória é marcada pela luta contra o racismo, o sexismo, a desigualdade social e o encarceramento em massa.",
+      "Tornou-se mundialmente conhecida após sua prisão em 1970, que provocou uma grande campanha internacional por sua liberdade. Posteriormente, foi absolvida."
+    ],
+    legado: ["Grande referência do feminismo negro.", "Defesa dos direitos da população negra.", "Crítica ao sistema prisional."]
+  },
+  brizola: {
+    nome: "Leonel Brizola", periodo: "1922 – 2004",
+    resumo: "Democracia e educação pública.",
+    img: "https://www.palaciopiratini.rs.gov.br/upload/recortes/202105/14011135_7322_GDO.jpg",
+    texto: [
+      "Leonel Brizola foi um importante líder político brasileiro, conhecido principalmente pela defesa da educação pública e da democracia.",
+      "Participou da Campanha da Legalidade, movimento que defendeu a Constituição brasileira durante uma crise política em 1961.",
+      "Após o golpe militar de 1964, viveu no exílio. Mais tarde retornou ao Brasil e continuou sua atuação política."
+    ],
+    legado: ["Defesa da educação pública.", "Participação na luta pela democracia.", "Importância histórica na política brasileira."]
+  },
+  king: {
+    nome: "Martin Luther King Jr.", periodo: "1929 – 1968",
+    resumo: "Direitos civis e resistência não violenta.",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Martin_Luther_King%2C_Jr..jpg/960px-Martin_Luther_King%2C_Jr..jpg",
+    texto: [
+      "Martin Luther King Jr. foi pastor e um dos maiores líderes do movimento pelos direitos civis nos Estados Unidos.",
+      "Defendeu estratégias de resistência não violenta e participou de marchas, protestos e movimentos contra a segregação racial.",
+      "Em 1964, recebeu o Prêmio Nobel da Paz. Sua luta ajudou a transformar profundamente a sociedade norte-americana."
+    ],
+    legado: ["Defesa dos direitos civis.", "Combate à segregação racial.", "Símbolo mundial da resistência não violenta."]
+  },
+  mandela: {
+    nome: "Nelson Mandela", periodo: "1918 – 2013",
+    resumo: "A luta contra o apartheid.",
+    img: "https://upload.wikimedia.org/wikipedia/commons/0/02/Nelson_Mandela_1994.jpg",
+    texto: [
+      "Nelson Mandela foi um dos maiores símbolos da luta contra o apartheid, sistema de segregação racial da África do Sul.",
+      "Por sua atuação política, passou 27 anos na prisão. Após ser libertado, participou das negociações para acabar com o apartheid.",
+      "Em 1994, tornou-se o primeiro presidente negro eleito democraticamente na África do Sul."
+    ],
+    legado: ["Luta contra o apartheid.", "Defesa da democracia.", "Símbolo mundial de resistência."]
+  },
+  sankara: {
+    nome: "Thomas Sankara", periodo: "1949 – 1987",
+    resumo: "Revolução e soberania africana.",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtz96xPGbg9mjJp0k8IBBXm2bJZ6wQTk3mWREg2da4lx1YO8FZKt9xqLE&s=10",
+    texto: [
+      "Thomas Sankara foi presidente de Burkina Faso e uma importante figura política africana.",
+      "Defendeu a independência econômica do continente africano, o combate à corrupção e a melhoria das condições de vida da população.",
+      "Também apoiou políticas voltadas para a educação, a saúde e os direitos das mulheres."
+    ],
+    legado: ["Defesa da soberania africana.", "Combate à corrupção.", "Valorização dos direitos das mulheres."]
+  },
+  ruby: {
+    nome: "Ruby Bridges", periodo: "1954 – Atualidade",
+    resumo: "O combate à segregação nas escolas.",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpyVV2dRO60CC9T9U6vNDnFxV7IQz2KfI5-idRk1MAUgrVARIjv_is8kil&s=10",
+    texto: [
+      "Ruby Bridges se tornou um símbolo da luta contra a segregação racial nos Estados Unidos ainda quando era criança.",
+      "Em 1960, aos seis anos de idade, Ruby foi uma das primeiras crianças negras a frequentar uma escola anteriormente reservada apenas para estudantes brancos.",
+      "Mesmo enfrentando protestos racistas e hostilidade, continuou frequentando a escola e tornou-se um símbolo da luta pelos direitos civis."
+    ],
+    legado: ["Símbolo da integração racial.", "Inspiração para a educação inclusiva.", "Referência dos direitos civis."]
+  },
+  milton: {
+    nome: "Milton Santos", periodo: "1926 – 2001",
+    resumo: "Geografia, território e globalização.",
+    img: "https://www.saopaulo.sp.leg.br/apartes/wp-content/uploads/sites/26/2024/07/milton-santos-retrato-close.png",
+    texto: [
+      "Milton Santos foi um dos maiores geógrafos da história e um dos intelectuais brasileiros mais reconhecidos internacionalmente.",
+      "Seus estudos analisaram o território, a globalização, as cidades e as desigualdades sociais.",
+      "Milton Santos questionou a forma como a globalização poderia aumentar as desigualdades entre diferentes grupos e países."
+    ],
+    legado: ["Transformação dos estudos geográficos.", "Crítica às desigualdades da globalização.", "Reconhecimento internacional na Geografia."]
+  },
+  assata: {
+    nome: "Assata Shakur", periodo: "1947 – Atualidade",
+    resumo: "Ativismo e movimentos negros.",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPaVlShv8rZuITq_pGoG60B-vEuOENkSDTq2U9Z-UDPw&s=10",
+    texto: [
+      "Assata Shakur, nascida Joanne Chesimard, tornou-se uma conhecida ativista ligada aos movimentos negros radicais dos Estados Unidos nas décadas de 1960 e 1970.",
+      "Participou de organizações e movimentos que lutavam contra o racismo e a violência sofrida pela população negra.",
+      "Sua trajetória é controversa: ela foi condenada em um processo relacionado a um confronto em Nova Jersey, contestou as acusações e posteriormente fugiu da prisão, recebendo asilo em Cuba."
+    ],
+    legado: ["Figura importante nos debates sobre movimentos negros.", "Símbolo político para diversos ativistas.", "Provoca debates sobre racismo, justiça e repressão estatal."]
+  },
+  democracia: {
+    nome: "Democracia Corinthiana", periodo: "1982 – 1984",
+    resumo: "Futebol, participação e democracia.",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk-r1yXh8pSX9rM7H6fbmQ5buTXfSl0koSQv0whwpPOK9XtDwlPBqPnYg&s=10",
+    texto: [
+      "A Democracia Corinthiana foi um movimento criado dentro do Corinthians durante o início da década de 1980, período em que o Brasil ainda passava pela redemocratização após anos de ditadura militar.",
+      "O movimento defendia que jogadores, funcionários e dirigentes participassem coletivamente das decisões importantes do clube.",
+      "Entre os nomes mais conhecidos estavam Sócrates, Wladimir e Walter Casagrande. A Democracia Corinthiana mostrou que o futebol também poderia ser um espaço de participação política e defesa da cidadania.",
+      "O movimento também se tornou conhecido pelo apoio à redemocratização do Brasil e ao movimento das Diretas Já."
+    ],
+    legado: ["Participação coletiva nas decisões.", "Defesa da democracia e da liberdade.", "Uso do futebol como espaço de expressão social.", "Um dos maiores movimentos políticos da história do futebol brasileiro."]
+  }
+};
+
+// Gera os cards
+document.getElementById("cards").innerHTML = Object.entries(historias).map(([id, h]) => `
+  <div onclick="mostrarHistoria('${id}')"
+       class="bg-white rounded-xl overflow-hidden text-center cursor-pointer shadow-lg border-b-[5px] border-vinho
+              transition duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:bg-[#fff8e8]">
+    <img src="${h.img}" alt="${h.nome}" class="w-full h-52 object-cover" loading="lazy">
+    <div class="p-5">
+      <h3 class="text-vinho font-bold mb-2.5">${h.nome}</h3>
+      <p class="text-sm text-gray-600 leading-normal">${h.resumo}</p>
+    </div>
+  </div>`).join("");
+
+function mostrarHistoria(id) {
+  const h = historias[id];
+  document.getElementById("nome").textContent = h.nome;
+  document.getElementById("periodo").textContent = h.periodo;
+  document.getElementById("conteudo").innerHTML =
+    h.texto.map(p => `<p class="text-[1.05rem] leading-[1.9] mb-5">${p}</p>`).join("") +
+    `<h3 class="text-vinho font-bold text-lg mt-8 mb-4">Legado</h3>
+     <ul class="list-disc pl-6 leading-loose">${h.legado.map(l => `<li>${l}</li>`).join("")}</ul>`;
+  const sec = document.getElementById("historia");
+  sec.classList.remove("hidden");
+  sec.scrollIntoView({ behavior: "smooth" });
+}
+
+function voltar() {
+  document.getElementById("historia").classList.add("hidden");
+  document.getElementById("escolha").scrollIntoView({ behavior: "smooth" });
+}
+</script>
 </body>
 </html>
