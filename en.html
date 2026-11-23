@@ -1,784 +1,1241 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
-
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOICES | Diversity Gallery</title>
 
-  <meta charset="utf-8" />
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            fontFamily: {
+                sans: ['DM Sans', 'sans-serif'],
+                serif: ['Playfair Display', 'serif']
+            },
+            colors: {
+                redx: '#C52B3A',
+                orangex: '#ED783E',
+                purplex: '#7045A1',
+                bluex: '#2866A3',
+                dark: '#171522',
+                paper: '#F7F4F1'
+            }
+        }
+    }
+}
+</script>
 
-  <meta name="description"
+<style>
+:root {
+    --red: #C52B3A;
+    --orange: #ED783E;
+    --purple: #7045A1;
+    --blue: #2866A3;
+    --dark: #171522;
+    --paper: #F7F4F1;
+}
 
-    content="An educational project about people and movements that changed society through activism, culture, science, and democracy." />
+html { scroll-behavior: smooth; }
+body { background: var(--paper); }
 
-  <title>Stories That Changed the World</title>
+.hero-bg {
+    background:
+    linear-gradient(90deg,rgba(20,15,25,.96),rgba(20,15,25,.65)),
+    url('https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1800');
+    background-size: cover;
+    background-position: center;
+}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
+.gradient-text {
+    background: linear-gradient(90deg,var(--red),var(--orange),var(--purple),var(--blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
 
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+.gradient-line {
+    background: linear-gradient(90deg,var(--red),var(--orange),var(--purple),var(--blue));
+}
 
-  <link
+.person-card {
+    transition: .3s ease;
+    border-bottom: 4px solid transparent;
+}
 
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+.person-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 18px 35px #17152220;
+    border-bottom-color: var(--orange);
+}
 
-    rel="stylesheet" />
+.filter-active {
+    background: var(--dark);
+    color: white;
+    border-color: var(--dark);
+}
 
-  <script src="https://cdn.tailwindcss.com"></script>
+.modal-bg { background: rgba(15,12,22,.82); }
 
-  <script>
+.timeline {
+    position: relative;
+}
 
-    tailwind.config = { theme: { extend: { fontFamily: { sans: ['Montserrat', 'sans-serif'], serif: ['"Playfair Display"', 'serif'] }, colors: { vinho: '#8b1e1e', ouro: '#d6ad38', papel: '#f4f1ea' } } } }
+.timeline::before {
+    content: "";
+    position: absolute;
+    left: 19px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(var(--red),var(--orange),var(--purple),var(--blue));
+    border-radius: 10px;
+}
 
-  </script>
+.timeline-item {
+    position: relative;
+    padding-left: 58px;
+    padding-bottom: 38px;
+}
 
-  <style>
+.timeline-dot {
+    position: absolute;
+    left: 8px;
+    top: 5px;
+    width: 26px;
+    height: 26px;
+    border: 5px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px var(--purple);
+    background: var(--orange);
+    z-index: 1;
+}
 
-    @media (prefers-reduced-motion:no-preference) {
+.timeline-card {
+    transition: .25s;
+}
+.timeline-card:hover {
+    transform: translateX(5px);
+}
 
-      html {
-
-        scroll-behavior: smooth
-
-      }
-
+@media(min-width:768px) {
+    .timeline::before {
+        left: 50%;
+        transform: translateX(-50%);
     }
 
-
-
-    .fade {
-
-      animation: fade .4s ease both
-
+    .timeline-item {
+        width: 50%;
+        padding-left: 0;
+        padding-bottom: 55px;
     }
 
-
-
-    @keyframes fade {
-
-      from {
-
-        opacity: 0;
-
-        transform: translateY(8px)
-
-      }
-
-
-
-      to {
-
-        opacity: 1;
-
-        transform: none
-
-      }
-
+    .timeline-item:nth-child(odd) {
+        padding-right: 45px;
+        text-align: right;
     }
 
-
-
-    :focus-visible {
-
-      outline: 3px solid #d6ad38;
-
-      outline-offset: 2px
-
+    .timeline-item:nth-child(even) {
+        margin-left: 50%;
+        padding-left: 45px;
     }
 
-  </style>
+    .timeline-item:nth-child(odd) .timeline-dot {
+        left: auto;
+        right: -13px;
+    }
 
+    .timeline-item:nth-child(even) .timeline-dot {
+        left: -13px;
+    }
+}
+</style>
 </head>
 
+<body class="text-dark font-sans">
 
+<!-- NAVIGATION -->
+<header class="bg-[#171522] text-white sticky top-0 z-40 shadow-lg">
+<nav class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-<body class="font-sans bg-papel text-[#1b1b1b]">
+    <a href="#home" class="font-serif text-2xl font-bold">
+        VOICES<span class="text-orangex">.</span>
+    </a>
 
-  <a href="#escolha"
-
-    class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-ouro focus:text-[#111] focus:p-3">Skip to
-
-    content</a>
-
-
-
-  <header class="bg-gradient-to-br from-[#111] to-[#7a1717] text-white text-center px-5 pt-5 pb-14">
-
-    <div class="flex justify-end max-w-6xl mx-auto">
-
-      <a class="px-5 py-2 rounded-full bg-ouro text-[#111] font-bold hover:bg-white transition" href="historias_que_mudaram_o_mundo_atualizado.html"
-
-        hreflang="pt-BR">🇧🇷 Português</a>
-
+    <div class="hidden md:flex gap-7 text-sm font-semibold">
+        <a href="#home" class="hover:text-orangex">Home</a>
+        <a href="#gallery" class="hover:text-orangex">People</a>
+        <a href="#timeline" class="hover:text-orangex">Timeline</a>
+        <a href="#spotlight" class="hover:text-orangex">Chico Mendes</a>
+        <a href="#about" class="hover:text-orangex">About</a>
     </div>
 
-    <h1 class="font-serif font-bold text-[clamp(2.5rem,6vw,4.5rem)] mt-10 mb-4">Stories That <span
+    <button onclick="toggleMenu()" class="md:hidden text-2xl">☰</button>
+</nav>
 
-        class="text-ouro">Changed the World</span></h1>
+<div id="mobileMenu" class="hidden md:hidden px-6 pb-5 space-y-3">
+    <a href="#home" class="block">Home</a>
+    <a href="#gallery" class="block">People</a>
+    <a href="#timeline" class="block">Timeline</a>
+    <a href="#spotlight" class="block">Chico Mendes</a>
+    <a href="#about" class="block">About</a>
+</div>
+</header>
 
-    <p class="max-w-[750px] mx-auto leading-8 text-gray-200">Choose a person or movement to explore their story, struggles, ideas, and legacy.</p>
+<!-- HERO -->
+<section id="home" class="hero-bg min-h-[600px] flex items-center text-white">
+<div class="max-w-7xl mx-auto px-6 py-24 w-full">
 
-    <nav class="mt-8 flex flex-wrap justify-center gap-3" id="temas" aria-label="Filter by topic"></nav>
+    <span class="text-orangex uppercase tracking-[.3em] text-xs font-bold">
+        History • Resistance • Transformation
+    </span>
 
-  </header>
+    <h1 class="font-serif text-5xl md:text-7xl font-bold max-w-4xl mt-6 leading-tight">
+        Voices that <span class="text-red-600">transformed</span> the world.
+    </h1>
 
+    <p class="text-gray-300 text-lg max-w-2xl mt-7 leading-relaxed">
+        A tribute to the people who confronted injustice,
+        challenged prejudice, and fought for a more just,
+        equal, and diverse society.
+    </p>
 
+    <div class="flex flex-wrap gap-4 mt-10">
+        <a href="#gallery" class="bg-redx hover:bg-red-800 text-white px-7 py-4 font-bold transition">
+            EXPLORE THE GALLERY →
+        </a>
 
-  <main>
+        <a href="#timeline" class="border border-white/50 hover:bg-white hover:text-dark px-7 py-4 font-bold transition">
+            VIEW TIMELINE
+        </a>
+    </div>
 
-    <section class="px-[6%] sm:px-[8%] py-16" id="escolha">
+    <div class="flex gap-3 mt-12">
+        <div class="w-12 h-2 bg-redx"></div>
+        <div class="w-12 h-2 bg-orangex"></div>
+        <div class="w-12 h-2 bg-purplex"></div>
+        <div class="w-12 h-2 bg-bluex"></div>
+    </div>
+</div>
+</section>
 
-      <div class="text-center mb-8">
+<!-- INTRODUCTION -->
+<section class="max-w-7xl mx-auto px-6 py-20">
+<div class="grid md:grid-cols-2 gap-12 items-center">
 
-        <h2 class="font-serif font-bold text-4xl text-vinho">Who would you like to learn about?</h2>
+    <div>
+        <span class="text-redx uppercase tracking-widest text-xs font-bold">
+            Our mission
+        </span>
 
-        <p class="mt-3 text-gray-600">Select a person to discover their story.</p>
+        <h2 class="font-serif text-4xl md:text-5xl mt-4 leading-tight">
+            Diversity is also a story of struggle.
+        </h2>
+    </div>
 
-      </div>
+    <p class="text-gray-600 leading-relaxed text-lg">
+        Throughout history, different people have risen up
+        against racism, social inequality, violence,
+        exploitation, and environmental destruction. Their journeys
+        show that transforming society depends
+        on everyone's participation.
+    </p>
+</div>
+</section>
 
-      <div class="max-w-md mx-auto mb-3">
+<!-- GALLERY -->
+<section id="gallery" class="bg-white py-20">
+<div class="max-w-7xl mx-auto px-6">
 
-        <label for="busca" class="sr-only">Search for a person</label>
+    <div class="mb-12">
+        <span class="text-purplex uppercase tracking-widest text-xs font-bold">
+            Historical figures
+        </span>
 
-        <input id="busca" type="search" placeholder="🔎 Search by name or topic…" autocomplete="off"
+        <h2 class="font-serif text-4xl md:text-5xl mt-3">
+            Diversity gallery
+        </h2>
 
-          class="w-full rounded-full border-2 border-gray-300 focus:border-vinho px-5 py-3 bg-white" />
+        <p class="text-gray-500 mt-4">
+            Meet people who turned resistance into a tool for transformation.
+        </p>
 
-      </div>
+        <div class="gradient-line w-28 h-1 mt-6"></div>
+    </div>
 
-      <p id="contagem" class="text-center text-sm text-gray-500 mb-8" aria-live="polite"></p>
+    <!-- SEARCH -->
+    <div class="flex flex-col md:flex-row gap-4 mb-8">
 
-      <div class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-6" id="cards"></div>
+        <input id="search"
+            type="text"
+            placeholder="Search for a person..."
+            class="w-full border border-gray-200 px-5 py-4 outline-none focus:border-purplex"
+            oninput="renderGallery()">
 
-      <p id="vazio" class="hidden text-center text-gray-600 py-10">No stories found. Try another search or topic.</p>
+        <select id="areaFilter"
+            onchange="renderGallery()"
+            class="border border-gray-200 px-5 py-4 bg-white outline-none focus:border-purplex">
+        </select>
+    </div>
 
-    </section>
+    <!-- FILTERS -->
+    <div id="filterButtons" class="flex flex-wrap gap-3 mb-10"></div>
 
+    <p id="resultCount" class="text-gray-400 text-sm mb-6"></p>
 
+    <div id="galleryGrid"
+        class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7">
+    </div>
 
-    <section class="hidden bg-white px-[6%] sm:px-[8%] py-16 min-h-screen" id="historia" aria-labelledby="nome">
+    <div id="emptyMessage" class="hidden text-center py-20 text-gray-500">
+        No people found.
+    </div>
 
-      <article class="max-w-[1000px] mx-auto fade">
+</div>
+</section>
 
-        <button class="mb-8 text-vinho font-bold hover:underline" onclick="voltar()">← Back to all people</button>
+<!-- TIMELINE -->
+<section id="timeline" class="py-24 bg-[#F0EAF5]">
+<div class="max-w-6xl mx-auto px-6">
 
-        <h2 class="font-serif font-bold text-4xl sm:text-5xl text-vinho mb-2.5" id="nome" tabindex="-1"></h2>
+    <div class="text-center mb-16">
+        <span class="text-purplex uppercase tracking-[.3em] text-xs font-bold">
+            History in motion
+        </span>
 
-        <span class="inline-block bg-[#111] text-white px-[18px] py-2 rounded-full mb-4 font-bold" id="periodo"></span>
+        <h2 class="font-serif text-4xl md:text-6xl mt-4">
+            <span class="gradient-text">Timeline</span>
+        </h2>
 
-        <div class="flex flex-wrap gap-2 mb-8" id="tags"></div>
+        <p class="text-gray-600 mt-5 max-w-2xl mx-auto">
+            Explore the events and achievements that marked
+            the journeys of people who transformed society.
+        </p>
 
-        <div id="conteudo"></div>
+        <div class="gradient-line w-28 h-1 mx-auto mt-7"></div>
+    </div>
 
-        <div id="relacionados" class="mt-12"></div>
+    <!-- TIMELINE FILTER -->
+    <div class="flex justify-center mb-12">
+        <select id="timelineFilter"
+            onchange="renderTimeline()"
+            class="bg-white border border-purple-200 px-5 py-3 outline-none focus:border-purplex">
+            <option value="All">All events</option>
+            <option value="Brazil">Brazil</option>
+            <option value="World">World</option>
+        </select>
+    </div>
 
-        <div class="mt-10 flex flex-wrap justify-between gap-3">
+    <div id="timelineContent" class="timeline"></div>
 
-          <button id="ant" class="bg-gray-100 hover:bg-ouro px-5 py-3 rounded-md font-semibold transition"></button>
+    <p class="text-center text-gray-500 text-sm mt-8">
+        A history built by different voices, cultures, and movements.
+    </p>
 
-          <button id="prox" class="bg-gray-100 hover:bg-ouro px-5 py-3 rounded-md font-semibold transition"></button>
+</div>
+</section>
 
+<!-- SPOTLIGHT: CHICO MENDES -->
+<section id="spotlight" class="bg-[#171522] text-white py-24 relative overflow-hidden">
+
+<div class="absolute top-0 right-0 w-96 h-96 rounded-full bg-redx/10 blur-3xl"></div>
+
+<div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative">
+
+    <div class="relative">
+        <div class="absolute -top-5 -left-5 w-24 h-24 border-t-4 border-l-4 border-orangex"></div>
+
+        <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ05UlpaRedCO1HgL4Ww-dCtPlLY6h_ZAg9fqV-Oae5a563MtkK9ZsCRXiarGTCNmLTpkXPjhVZzekpU5JWQWoqALqUODiyoyaHbBdJpyg&s=10"
+            alt="Chico Mendes"
+            referrerpolicy="no-referrer"
+            class="w-full h-[420px] object-cover grayscale"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+
+        <div class="hidden bg-stone-700 h-[420px] items-center justify-center text-8xl font-serif">
+            CM
+        </div>
+    </div>
+
+    <div>
+        <span class="text-orangex text-xs font-bold tracking-[.3em] uppercase">
+            Special spotlight • Brazil
+        </span>
+
+        <h2 class="font-serif text-5xl md:text-6xl mt-5">
+            Chico Mendes
+        </h2>
+
+        <p class="text-orangex mt-3 font-semibold">
+            1944 – 1988 | Environmentalist and union leader
+        </p>
+
+        <p class="text-gray-300 leading-relaxed mt-7">
+            Francisco Alves Mendes Filho, known as Chico Mendes,
+            was a Brazilian rubber tapper, union leader, and environmentalist.
+            He defended the preservation of the Amazon Rainforest and the rights
+            of the workers who depended on it to survive.
+        </p>
+
+        <p class="text-gray-300 leading-relaxed mt-5">
+            He organized the so-called <em>empates</em> (standoffs), peaceful movements
+            carried out by rubber tappers to prevent deforestation.
+            His struggle gained international recognition, but he was
+            murdered in 1988 for his work defending the forest
+            and local communities.
+        </p>
+
+        <div class="border-l-4 border-orangex pl-5 mt-8">
+            <p class="font-serif text-xl italic">
+                "At first I thought I was fighting to save
+                rubber trees, then I thought I was fighting to
+                save the Amazon Rainforest. Now I realize I am
+                fighting for humanity."
+            </p>
+            <p class="text-gray-500 text-xs mt-3">
+                Quote attributed to Chico Mendes.
+            </p>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="max-w-7xl mx-auto px-6 py-24">
+<div class="max-w-3xl mx-auto text-center">
+
+    <span class="text-bluex uppercase tracking-widest text-xs font-bold">
+        About the project
+    </span>
+
+    <h2 class="font-serif text-4xl md:text-5xl mt-4">
+        Know in order to transform.
+    </h2>
+
+    <p class="text-gray-600 leading-relaxed mt-7">
+        The Diversity Gallery aims to honor
+        people who contributed to building
+        a more democratic society. Through history,
+        culture, and education, we seek to recognize different
+        forms of resistance and give visibility to people
+        who have marked generations.
+    </p>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+
+        <div class="bg-redx text-white p-5">
+            <p class="font-serif text-3xl">01</p>
+            <p class="text-sm mt-2">Resistance</p>
         </div>
 
+        <div class="bg-orangex text-white p-5">
+            <p class="font-serif text-3xl">02</p>
+            <p class="text-sm mt-2">Transformation</p>
+        </div>
+
+        <div class="bg-purplex text-white p-5">
+            <p class="font-serif text-3xl">03</p>
+            <p class="text-sm mt-2">Diversity</p>
+        </div>
+
+        <div class="bg-bluex text-white p-5">
+            <p class="font-serif text-3xl">04</p>
+            <p class="text-sm mt-2">Knowledge</p>
+        </div>
+
+    </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-[#171522] text-white py-10">
+<div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between gap-5">
+
+    <div>
+        <h2 class="font-serif text-2xl font-bold">
+            VOICES<span class="text-orangex">.</span>
+        </h2>
+
+        <p class="text-gray-400 text-sm mt-2">
+            Diversity Gallery — Voices that transformed the world.
+        </p>
+    </div>
+
+    <p class="text-gray-400 text-sm self-end">
+        History, respect, and diversity.
+    </p>
+</div>
+
+<div class="gradient-line h-1 mt-8"></div>
+</footer>
+
+<!-- MODAL -->
+<div id="modal"
+    class="hidden fixed inset-0 z-50 modal-bg items-center justify-center p-4"
+    onclick="closeModal(event)">
+
+    <div class="bg-white max-w-2xl w-full max-h-[90vh] overflow-y-auto relative"
+        onclick="event.stopPropagation()">
+
+        <button onclick="closeModal()"
+            class="absolute top-4 right-4 bg-white rounded-full w-10 h-10 text-xl z-10 shadow">
+            ✕
+        </button>
+
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<script>
+
+// ======================================
+// PEOPLE DATABASE
+// ======================================
+
+const personalities = [
+
+{
+name:"Chico Mendes", years:"1944 – 1988", country:"Brazil",
+areas:["Environment","Human rights"],
+tag:"Environmentalism", initials:"CM", color:"#56765A",
+image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ05UlpaRedCO1HgL4Ww-dCtPlLY6h_ZAg9fqV-Oae5a563MtkK9ZsCRXiarGTCNmLTpkXPjhVZzekpU5JWQWoqALqUODiyoyaHbBdJpyg&s=10",
+bio:"Brazilian rubber tapper, union leader, and environmentalist. He fought for the preservation of the Amazon and for the rights of extractive workers.",
+contribution:"He organized the empates against deforestation and strengthened the rubber tappers' movement.",
+importance:"His legacy became an international symbol of the fight to protect the forest and the peoples who live in it."
+},
+
+{
+name:"Malcolm X", years:"1925 – 1965", country:"United States",
+areas:["Racial equality","Human rights"],
+tag:"Anti-racism", initials:"MX", color:"#8A4938",
+image:"https://commons.wikimedia.org/wiki/Special:FilePath/Malcolm_X_NYWTS_3.jpg?width=600",
+bio:"African American activist who became one of the leading voices against racism and racial segregation in the United States.",
+contribution:"He defended the dignity, autonomy, and rights of Black people.",
+importance:"His thinking influenced Black movements and debates about racial justice."
+},
+
+{
+name:"Angela Davis", years:"1944 – present", country:"United States",
+areas:["Racial equality","Women's rights","Human rights"],
+tag:"Black feminism", initials:"AD", color:"#79516C",
+image:"https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/Angela_Davis_in_a_half-length_portrait_by_Bernard_Gotfryd_-_crop.jpg/250px-Angela_Davis_in_a_half-length_portrait_by_Bernard_Gotfryd_-_crop.jpg?utm_source=pt.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+bio:"American philosopher, professor, and activist known for her fight against racism, sexism, and social inequality.",
+contribution:"She took part in civil rights movements and developed reflections on race, gender, and social class.",
+importance:"She is a leading reference in Black feminism and the fight for social justice."
+},
+
+{
+name:"Martin Luther King Jr.", years:"1929 – 1968", country:"United States",
+areas:["Racial equality","Human rights"],
+tag:"Civil rights", initials:"MLK", color:"#596C82",
+image:"https://commons.wikimedia.org/wiki/Special:FilePath/Martin_Luther_King_Jr_NYWTS.jpg?width=600",
+bio:"Pastor and activist who led major movements against racial segregation in the United States.",
+contribution:"He championed nonviolent resistance and took part in historic civil rights campaigns.",
+importance:"He received the Nobel Peace Prize in 1964."
+},
+
+{
+name:"Nelson Mandela", years:"1918 – 2013", country:"South Africa",
+areas:["Racial equality","Human rights"],
+tag:"Anti-racism", initials:"NM", color:"#64816A",
+image:"https://commons.wikimedia.org/wiki/Special:FilePath/Nelson_Mandela_1994.jpg?width=600",
+bio:"South African leader who fought apartheid, the regime of racial segregation in South Africa.",
+contribution:"He spent 27 years in prison for his political struggle and became the first Black president of democratic South Africa.",
+importance:"He is recognized worldwide as a symbol of resistance and reconciliation."
+},
+
+{
+name:"Marielle Franco", years:"1979 – 2018", country:"Brazil",
+areas:["Human rights","Racial equality","Women's rights","LGBTQIA+ rights"],
+tag:"Social rights", initials:"MF", color:"#A34B69",
+image:"https://commons.wikimedia.org/wiki/Special:FilePath/Marielle_Franco.jpg?width=600",
+bio:"Sociologist, activist, and city councilwoman in Rio de Janeiro. She defended human rights and denounced violence against residents of the urban periphery.",
+contribution:"She worked to defend Black women, the LGBTQIA+ population, and the rights of peripheral communities.",
+importance:"Her murder in 2018 drew international attention and became a symbol of the fight for justice."
+},
+
+{
+name:"Rosa Parks", years:"1913 – 2005", country:"United States",
+areas:["Racial equality","Human rights"],
+tag:"Civil rights", initials:"RP", color:"#8B6651",
+image:"https://commons.wikimedia.org/wiki/Special:FilePath/Rosa_Parks_1955.jpg?width=600",
+bio:"African American activist who refused to give up her seat to a white passenger on a segregated bus in Alabama.",
+contribution:"Her arrest helped spark the Montgomery bus boycott.",
+importance:"She became one of the greatest symbols of resistance to racial segregation."
+},
+
+{
+name:"Greta Thunberg", years:"2003 – present", country:"Sweden",
+areas:["Environment","Human rights"],
+tag:"Climate", initials:"GT", color:"#567B70",
+image:"https://upload.wikimedia.org/wikipedia/commons/f/f8/Greta_Thunberg_in_May_2026_%28cropped_3x4%29.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original",
+bio:"Swedish environmental activist who gained international recognition for demanding action against climate change.",
+contribution:"She started a school strike for climate that inspired student mobilizations around the world.",
+importance:"She is one of the best-known voices of contemporary climate activism."
+},
+
+{
+name:"Wangari Maathai", years:"1940 – 2011", country:"Kenya",
+areas:["Environment","Women's rights"],
+tag:"Environmentalism", initials:"WM", color:"#587A51",
+image:"https://commons.wikimedia.org/wiki/Special:FilePath/Wangari_Maathai.jpg?width=600",
+bio:"Kenyan environmentalist, professor, and activist. She defended the environment, democracy, and women's rights.",
+contribution:"She founded the Green Belt Movement, which encouraged the planting of millions of trees.",
+importance:"She was the first African woman to receive the Nobel Peace Prize, in 2004."
+},
+
+{
+name:"Ailton Krenak", years:"1953 – present", country:"Brazil",
+areas:["Indigenous rights","Environment"],
+tag:"Indigenous peoples", initials:"AK", color:"#8B674A",
+image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEDV5crtF0DSTs0W3GMbTR_k453wz6cjX2YzpcrFNSs7CijWSoLA1AeQHZ&s=10",
+bio:"Brazilian writer, philosopher, and Indigenous leader of the Krenak people. He works to defend Indigenous peoples and nature.",
+contribution:"He took part in the fight for Indigenous rights in the 1988 Constitution.",
+importance:"In 2023, he became the first Indigenous person elected to the Brazilian Academy of Letters."
+},
+
+{
+name:"Dorothy Stang", years:"1931 – 2005", country:"Brazil",
+areas:["Environment","Human rights"],
+tag:"Socio-environmental justice", initials:"DS", color:"#657B5D",
+image:"https://www.arquidiocesedefortaleza.org.br/wp-content/uploads/2012/02/Dorothy-Stang1.jpg",
+bio:"Missionary and activist who worked with rural communities in the Amazon, defending land reform and environmental preservation.",
+contribution:"She supported small farmers and denounced land conflicts and exploitation in the Amazon region.",
+importance:"She was murdered in 2005 for her work defending rural workers and the environment."
+},
+
+{
+name:"Rigoberta Menchú", years:"1959 – present", country:"Guatemala",
+areas:["Indigenous rights","Human rights"],
+tag:"Indigenous peoples", initials:"RM", color:"#A27B4C",
+image:"https://commons.wikimedia.org/wiki/Special:FilePath/Rigoberta_Menchu.jpg?width=600",
+bio:"Guatemalan activist of Maya K'iche' Indigenous origin, a defender of the rights of Indigenous peoples.",
+contribution:"She denounced the violence and discrimination suffered by Indigenous communities in Guatemala.",
+importance:"She received the Nobel Peace Prize in 1992."
+},
+
+{
+name:"Harvey Milk", years:"1930 – 1978", country:"United States",
+areas:["LGBTQIA+ rights","Human rights"],
+tag:"Diversity", initials:"HM", color:"#79618A",
+image:"https://upload.wikimedia.org/wikipedia/commons/e/ea/Harvey_Milk_in_front_of_camera_shop_November_1977_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original",
+bio:"American politician and activist, one of the first openly gay men elected to public office in California.",
+contribution:"He defended anti-discrimination laws and equal rights for LGBTQIA+ people.",
+importance:"He became a historic reference for the LGBTQIA+ movement."
+},
+
+{
+name:"Malala Yousafzai", years:"1997 – present", country:"Pakistan",
+areas:["Human rights","Women's rights"],
+tag:"Girls' education", initials:"MY", color:"#9B6B8A",
+image:"https://commons.wikimedia.org/wiki/Special:FilePath/Malala_Yousafzai_2015.jpg?width=600",
+bio:"Pakistani activist who defends girls' right to education. From a young age, she denounced the restrictions the Taliban imposed on female students.",
+contribution:"She survived an attack in 2012 and continued her international campaign for girls' access to education.",
+importance:"She received the Nobel Peace Prize in 2014, becoming the youngest person to receive the award."
+},
+
+{
+name:"Marie Curie", years:"1867 – 1934", country:"Poland / France",
+areas:["Women in science","Different professions"],
+tag:"Physics and Chemistry", initials:"MC", color:"#65768D",
+image:"https://commons.wikimedia.org/wiki/Special:FilePath/Marie_Curie_c1920.jpg?width=600",
+bio:"Polish-born scientist who became a French citizen, recognized for her research on radioactivity.",
+contribution:"She discovered the elements polonium and radium together with Pierre Curie.",
+importance:"She was the first woman to win a Nobel Prize and the first person to win the prize in two different scientific fields."
+},
+
+{
+name:"Katherine Johnson", years:"1918 – 2020", country:"United States",
+areas:["Women in science","Different professions","Racial equality"],
+tag:"Mathematics and NASA", initials:"KJ", color:"#64768B",
+image:"https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6d/Katherine_Johnson_1983.jpg/330px-Katherine_Johnson_1983.jpg?utm_source=pt.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+bio:"African American mathematician who worked at NASA, the United States space agency.",
+contribution:"Her calculations were essential to planning important space missions, including John Glenn's flight.",
+importance:"She faced racism and gender discrimination and opened paths for other Black women in science."
+},
+
+{
+name:"Mae Jemison", years:"1956 – present", country:"United States",
+areas:["Women in science","Different professions","Racial equality"],
+tag:"Astronomy and medicine", initials:"MJ", color:"#567B91",
+image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm6xB1uw8NeigN-IqioFuhW2N-42e6p6y-ZapPzRckvw&s=10",
+bio:"American physician, engineer, and former astronaut.",
+contribution:"In 1992, she became the first Black woman to travel to space, aboard a mission of the space shuttle Endeavour.",
+importance:"She encourages girls and young people to take part in science, technology, and space exploration."
+},
+
+{
+name:"Stephen Hawking", years:"1942 – 2018", country:"United Kingdom",
+areas:["People with disabilities","Different professions"],
+tag:"Physics and cosmology", initials:"SH", color:"#596C82",
+image:"https://commons.wikimedia.org/wiki/Special:FilePath/Stephen_Hawking.StarChild.jpg?width=600",
+bio:"British theoretical physicist and cosmologist known for his studies of black holes and the origin of the universe.",
+contribution:"He carried out fundamental research in cosmology and used assistive technologies to communicate.",
+importance:"His journey highlighted the contribution of people with disabilities to science."
+},
+
+{
+name:"Helen Keller", years:"1880 – 1968", country:"United States",
+areas:["People with disabilities","Human rights"],
+tag:"Education and accessibility", initials:"HK", color:"#8B6651",
+image:"https://commons.wikimedia.org/wiki/Special:FilePath/Helen_KellerA.jpg?width=600",
+bio:"American deafblind writer, lecturer, and activist.",
+contribution:"She learned to communicate, read, and write with the support of her teacher Anne Sullivan and defended the rights of people with disabilities.",
+importance:"Her story became a reference in the fight for education, accessibility, and inclusion."
+},
+
+{
+name:"Temple Grandin", years:"1947 – present", country:"United States",
+areas:["People with disabilities","Different professions"],
+tag:"Science and inclusion", initials:"TG", color:"#687B62",
+image:"https://upload.wikimedia.org/wikipedia/commons/4/47/TempleGrandin.jpg?utm_source=pt.wikipedia.org&utm_campaign=index&utm_content=original",
+bio:"American autistic scientist, professor, and author.",
+contribution:"She developed designs for the handling and welfare of livestock and wrote about autism.",
+importance:"She helped broaden understanding of autism and the appreciation of different ways of thinking."
+},
+
+{
+name:"Ada Lovelace", years:"1815 – 1852", country:"United Kingdom",
+areas:["Different professions","Women in science"],
+tag:"Mathematics and programming", initials:"AL", color:"#82628B",
+image:"https://commons.wikimedia.org/wiki/Special:FilePath/Ada_Lovelace_portrait.jpg?width=600",
+bio:"British mathematician and writer considered one of the pioneers of computer programming.",
+contribution:"She wrote an algorithm for the Analytical Engine designed by Charles Babbage.",
+importance:"Her work anticipated fundamental concepts of modern computing."
+},
+
+{
+name:"Alan Turing", years:"1912 – 1954", country:"United Kingdom",
+areas:["Different professions"],
+tag:"Computing and mathematics", initials:"AT", color:"#596C82",
+image:"https://commons.wikimedia.org/wiki/Special:FilePath/Alan_Turing_Aged_16.jpg?width=600",
+bio:"British mathematician, logician, and computer scientist.",
+contribution:"He took part in the effort to decipher encrypted messages from Nazi Germany during World War II.",
+importance:"His ideas helped establish the theoretical foundations of computing and artificial intelligence."
+},
+
+{
+name:"Santos Dumont", years:"1873 – 1932", country:"Brazil",
+areas:["Different professions"],
+tag:"Aviation and invention", initials:"SD", color:"#6B805F",
+image:"https://static.nationalgeographicbrasil.com/files/styles/image_3200/public/52209390171df3f3d44f9o.jpg?w=1900&h=2589",
+bio:"Brazilian inventor and aviator, a pioneer in the development of dirigible balloons and aircraft.",
+contribution:"In 1906, he made a public flight in Paris with the 14-Bis airplane.",
+importance:"He is remembered as one of the key figures in the history of aviation."
+},
+
+{
+name:"Milton Santos", years:"1926 – 2001", country:"Brazil",
+areas:["Different professions","Racial equality"],
+tag:"Geography", initials:"MS", color:"#8B7157",
+image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9xRoZYua3Ay6XGOAMHlqZTia3_pqlBR2Norsv4VNhjd8h_zw_YmubFDBQ&s=10",
+bio:"Brazilian geographer internationally recognized for his contributions to geographical thought.",
+contribution:"He analyzed the relationships between geographic space, society, economy, and globalization.",
+importance:"He questioned the inequalities produced by economic development and received the Vautrin Lud Prize in 1994."
+},
+
+{
+name:"Frida Kahlo", years:"1907 – 1954", country:"Mexico",
+areas:["Cultural diversity","Women's rights"],
+tag:"Art and identity", initials:"FK", color:"#A34B69",
+image:"https://commons.wikimedia.org/wiki/Special:FilePath/Frida_Kahlo_1932.jpg?width=600",
+bio:"Mexican painter known for her self-portraits and for works that explore identity, culture, and personal experience.",
+contribution:"She produced works that expressed her story, her experiences, and elements of Mexican culture.",
+importance:"She became one of the most important artists in Latin America and a cultural reference."
+},
+
+{
+name:"Bob Marley", years:"1945 – 1981", country:"Jamaica",
+areas:["Cultural diversity","Human rights"],
+tag:"Music and resistance", initials:"BM", color:"#64816A",
+image:"https://cdn-images.dzcdn.net/images/artist/0d912d8519fde282133dad9ba38b4736/1900x1900-000000-81-0-0.jpg",
+bio:"Jamaican singer and songwriter who helped popularize reggae internationally.",
+contribution:"His songs addressed peace, freedom, inequality, and resistance to oppression.",
+importance:"He spread Jamaican culture and became a musical symbol of unity and hope."
+},
+
+{
+name:"Hayao Miyazaki", years:"1941 – present", country:"Japan",
+areas:["Cultural diversity"],
+tag:"Film and animation", initials:"HM", color:"#597A91",
+image:"https://commons.wikimedia.org/wiki/Special:FilePath/Hayao_Miyazaki.jpg?width=600",
+bio:"Japanese director, screenwriter, and animator, co-founder of Studio Ghibli.",
+contribution:"He created films such as My Neighbor Totoro, Spirited Away, and Howl's Moving Castle.",
+importance:"His work celebrates Japanese culture, imagination, friendship, and respect for nature."
+},
+
+{
+name:"Miriam Makeba", years:"1932 – 2008", country:"South Africa",
+areas:["Cultural diversity","Racial equality","Human rights"],
+tag:"Music and anti-racism", initials:"MM", color:"#A27B4C",
+image:"https://cdn-images.dzcdn.net/images/artist/bab8541deaa586c39fd4d4dcb2627ab5/1900x1900-000000-80-0-0.jpg",
+bio:"South African singer known internationally as Mama Africa.",
+contribution:"She used her music to spread African culture and denounce apartheid.",
+importance:"She became an important activist against racism and in defense of human rights."
+}
+
+];
+
+// ======================================
+// TIMELINE
+// ======================================
+
+const events = [
+
+{
+year:1903,
+title:"Marie Curie receives the Nobel Prize in Physics",
+place:"World",
+color:"#7045A1",
+description:"Marie Curie receives the Nobel Prize in Physics together with Pierre Curie and Henri Becquerel for research on radiation phenomena."
+},
+
+{
+year:1906,
+title:"The flight of the 14-Bis",
+place:"Brazil",
+color:"#C52B3A",
+description:"Santos Dumont makes a public flight in Paris with the 14-Bis, a historic milestone in aviation."
+},
+
+{
+year:1911,
+title:"Marie Curie receives the Nobel Prize in Chemistry",
+place:"World",
+color:"#7045A1",
+description:"Marie Curie receives her second Nobel Prize, this time in Chemistry, for her research on radium and polonium."
+},
+
+{
+year:1955,
+title:"Rosa Parks and the bus boycott",
+place:"World",
+color:"#2866A3",
+description:"Rosa Parks' arrest after refusing to give up her seat helps start the Montgomery bus boycott."
+},
+
+{
+year:1963,
+title:"I Have a Dream",
+place:"World",
+color:"#2866A3",
+description:"Martin Luther King Jr. delivers his historic speech during the March on Washington, advocating equality and civil rights."
+},
+
+{
+year:1964,
+title:"Nobel Peace Prize for Martin Luther King Jr.",
+place:"World",
+color:"#2866A3",
+description:"The activist receives the Nobel Peace Prize for his work defending civil rights and nonviolent resistance."
+},
+
+{
+year:1988,
+title:"Murder of Chico Mendes",
+place:"Brazil",
+color:"#C52B3A",
+description:"Chico Mendes is murdered in Xapuri, Acre. His fight to preserve the Amazon and defend the rights of rubber tappers gains even greater international attention."
+},
+
+{
+year:1992,
+title:"Rigoberta Menchú receives the Nobel Peace Prize",
+place:"World",
+color:"#ED783E",
+description:"The Guatemalan activist receives the Nobel Peace Prize for her work defending Indigenous peoples and human rights."
+},
+
+{
+year:1992,
+title:"Mae Jemison goes to space",
+place:"World",
+color:"#7045A1",
+description:"Mae Jemison takes part in the space shuttle Endeavour mission and becomes the first Black woman to travel to space."
+},
+
+{
+year:1993,
+title:"Nobel Peace Prize for Nelson Mandela",
+place:"World",
+color:"#2866A3",
+description:"Nelson Mandela and Frederik de Klerk jointly receive the Nobel Peace Prize for their efforts to end apartheid."
+},
+
+{
+year:1994,
+title:"Nelson Mandela becomes president",
+place:"World",
+color:"#2866A3",
+description:"Mandela is elected president of South Africa in the country's first democratic national elections with participation of all races."
+},
+
+{
+year:2004,
+title:"Wangari Maathai receives the Nobel Peace Prize",
+place:"World",
+color:"#567B70",
+description:"The Kenyan environmentalist receives the prize for her contribution to sustainable development, democracy, and peace."
+},
+
+{
+year:2012,
+title:"Attack on Malala",
+place:"World",
+color:"#C52B3A",
+description:"Malala Yousafzai is the target of an attack for defending girls' right to education in Pakistan."
+},
+
+{
+year:2014,
+title:"Malala receives the Nobel Peace Prize",
+place:"World",
+color:"#ED783E",
+description:"Malala receives the Nobel Peace Prize, becoming the youngest person to win the award."
+},
+
+{
+year:2018,
+title:"Murder of Marielle Franco",
+place:"Brazil",
+color:"#7045A1",
+description:"City councilwoman and activist Marielle Franco is murdered in Rio de Janeiro. Her journey and her fight for human rights gain even greater international attention."
+},
+
+{
+year:2023,
+title:"Ailton Krenak joins the Brazilian Academy of Letters",
+place:"Brazil",
+color:"#567B70",
+description:"Ailton Krenak is elected to the Brazilian Academy of Letters, becoming the first Indigenous person to join the institution."
+}
+
+];
+
+// ======================================
+// CATEGORIES
+// ======================================
+
+const categories = [
+"All",
+"Human rights",
+"Racial equality",
+"Environment",
+"Women's rights",
+"Indigenous rights",
+"LGBTQIA+ rights",
+"Women in science",
+"People with disabilities",
+"Different professions",
+"Cultural diversity"
+];
+
+let currentFilter = "All";
+
+// ======================================
+// CREATE FILTERS
+// ======================================
+
+function createFilters() {
+
+    const select = document.getElementById("areaFilter");
+    const buttons = document.getElementById("filterButtons");
+
+    select.innerHTML = categories.map(category =>
+        `<option value="${category}">${category}</option>`
+    ).join("");
+
+    buttons.innerHTML = categories.map((category,index) => `
         <button
+            onclick="setFilter(this.dataset.category,this)"
+            data-category="${category}"
+            class="filter-btn border border-gray-200 px-5 py-2 text-sm transition
+            ${index === 0 ? 'filter-active' : 'hover:border-purplex'}">
+            ${category}
+        </button>
+    `).join("");
+}
+
+// ======================================
+// RENDER GALLERY
+// ======================================
 
-          class="mt-8 bg-vinho hover:bg-[#111] text-white font-bold px-6 py-4 rounded-md transition-colors duration-300"
-
-          onclick="voltar()">← CHOOSE ANOTHER PERSON</button>
-
-      </article>
-
-    </section>
-
-  </main>
-
-
-
-  <footer class="text-center bg-[#111] text-white p-8">
-
-    <p class="font-semibold">Stories That Changed the World</p>
-
-    <p class="text-gray-400 text-sm mt-1">An educational project about activism, culture, democracy, and social change.</p>
-
-  </footer>
-
-
-
-  <script>
-
-    const historias = {
-      "malcolm": {
-            "nome": "Malcolm X",
-            "periodo": "1925 – 1965",
-            "resumo": "Black liberation and human rights.",
-            "texto": [
-                  "Malcolm X, born Malcolm Little, was one of the most important leaders in the struggle for the rights of Black people in the United States. His childhood was marked by racism and violence against his family.",
-                  "After spending time in prison, Malcolm began an intense process of education and personal transformation. He studied history and developed a deep understanding of racism in American society.",
-                  "He became one of the leading voices of Black consciousness, advocating pride in Black identity, Black self-determination, and human rights."
-            ],
-            "legado": [
-                  "A symbol of Black consciousness.",
-                  "Advocacy for human rights.",
-                  "An inspiration to anti-racist movements."
-            ]
-      },
-      "marighella": {
-            "nome": "Carlos Marighella",
-            "periodo": "1911 – 1969",
-            "resumo": "Resistance to Brazil’s dictatorship.",
-            "texto": [
-                  "Carlos Marighella was born in Salvador, in the state of Bahia, and became an important Brazilian political figure. From a young age, he took part in political movements and became involved with communist ideas.",
-                  "During the Brazilian military dictatorship, which began in 1964, he became one of the regime’s main opponents and took part in organizing political resistance.",
-                  "Marighella was killed in 1969 during a government repression operation. His life remains important in discussions about dictatorship, democracy, and political resistance in Brazil."
-            ],
-            "legado": [
-                  "A symbol of resistance to the military dictatorship.",
-                  "An important figure in Brazilian political history.",
-                  "An inspiration for the study of democracy."
-            ]
-      },
-      "racionais": {
-            "nome": "Racionais MC's",
-            "periodo": "1988 – Present",
-            "resumo": "The voice of the outskirts and Brazilian rap.",
-            "texto": [
-                  "Racionais MC's emerged in São Paulo and became one of the most important groups in the history of Brazilian music.",
-                  "Formed by Mano Brown, Ice Blue, Edi Rock, and KL Jay, the group used rap to address racism, inequality, violence, and life in the urban outskirts.",
-                  "The group brought visibility to experiences that were often ignored by society and traditional media."
-            ],
-            "legado": [
-                  "Revolutionized Brazilian rap.",
-                  "Gave a voice to communities on the urban outskirts.",
-                  "Turned music into a tool for social criticism."
-            ]
-      },
-      "angela": {
-            "nome": "Angela Davis",
-            "periodo": "1944 – Present",
-            "resumo": "Feminism, racism, and social justice.",
-            "texto": [
-                  "Angela Davis is a philosopher, professor, and one of the most important political activists in the United States.",
-                  "Her work has focused on fighting racism, sexism, social inequality, and mass incarceration.",
-                  "She became internationally known after her arrest in 1970, which sparked a major campaign around the world calling for her freedom. She was later acquitted."
-            ],
-            "legado": [
-                  "A leading reference in Black feminism.",
-                  "Advocacy for the rights of Black people.",
-                  "Criticism of the prison system."
-            ]
-      },
-      "brizola": {
-            "nome": "Leonel Brizola",
-            "periodo": "1922 – 2004",
-            "resumo": "Democracy and public education.",
-            "texto": [
-                  "Leonel Brizola was an important Brazilian political leader, best known for defending public education and democracy.",
-                  "He took part in the Legality Campaign, a movement that defended the Brazilian Constitution during a political crisis in 1961.",
-                  "After the 1964 military coup, he lived in exile. He later returned to Brazil and continued his political work."
-            ],
-            "legado": [
-                  "Advocacy for public education.",
-                  "Participation in the struggle for democracy.",
-                  "An important place in Brazilian political history."
-            ]
-      },
-      "king": {
-            "nome": "Martin Luther King Jr.",
-            "periodo": "1929 – 1968",
-            "resumo": "Civil rights and nonviolent resistance.",
-            "texto": [
-                  "Martin Luther King Jr. was a pastor and one of the greatest leaders of the civil rights movement in the United States.",
-                  "He advocated nonviolent resistance and took part in marches, protests, and campaigns against racial segregation.",
-                  "In 1964, he received the Nobel Peace Prize. His struggle helped profoundly transform American society."
-            ],
-            "legado": [
-                  "Advocacy for civil rights.",
-                  "The fight against racial segregation.",
-                  "A worldwide symbol of nonviolent resistance."
-            ]
-      },
-      "mandela": {
-            "nome": "Nelson Mandela",
-            "periodo": "1918 – 2013",
-            "resumo": "The struggle against apartheid.",
-            "texto": [
-                  "Nelson Mandela was one of the greatest symbols of the struggle against apartheid, the system of racial segregation in South Africa.",
-                  "Because of his political activities, he spent 27 years in prison. After his release, he took part in the negotiations that brought apartheid to an end.",
-                  "In 1994, he became South Africa’s first Black president elected in a democratic election."
-            ],
-            "legado": [
-                  "The struggle against apartheid.",
-                  "Advocacy for democracy.",
-                  "A worldwide symbol of resistance."
-            ]
-      },
-      "sankara": {
-            "nome": "Thomas Sankara",
-            "periodo": "1949 – 1987",
-            "resumo": "Revolution and African sovereignty.",
-            "texto": [
-                  "Thomas Sankara was the president of Burkina Faso and an important African political figure.",
-                  "He advocated the continent’s economic independence, the fight against corruption, and better living conditions for the population.",
-                  "He also supported policies focused on education, health care, and women’s rights."
-            ],
-            "legado": [
-                  "Advocacy for African sovereignty.",
-                  "The fight against corruption.",
-                  "Support for women’s rights."
-            ]
-      },
-      "ruby": {
-            "nome": "Ruby Bridges",
-            "periodo": "1954 – Present",
-            "resumo": "The fight against school segregation.",
-            "texto": [
-                  "Ruby Bridges became a symbol of the struggle against racial segregation in the United States when she was still a child.",
-                  "In 1960, at the age of six, Ruby was one of the first Black children to attend a school that had previously been reserved for white students.",
-                  "Despite facing racist protests and hostility, she continued attending school and became a symbol of the fight for civil rights."
-            ],
-            "legado": [
-                  "A symbol of school integration.",
-                  "An inspiration for inclusive education.",
-                  "A civil rights role model."
-            ]
-      },
-      "milton": {
-            "nome": "Milton Santos",
-            "periodo": "1926 – 2001",
-            "resumo": "Geography, territory, and globalization.",
-            "texto": [
-                  "Milton Santos was one of the greatest geographers in history and one of the most internationally recognized Brazilian intellectuals.",
-                  "His research examined territory, globalization, cities, and social inequalities.",
-                  "Milton Santos questioned how globalization could increase inequalities between different groups and countries."
-            ],
-            "legado": [
-                  "A transformation of geographical studies.",
-                  "Criticism of inequalities linked to globalization.",
-                  "International recognition in the field of geography."
-            ]
-      },
-      "assata": {
-            "nome": "Assata Shakur",
-            "periodo": "1947 – Present",
-            "resumo": "Activism and Black movements.",
-            "texto": [
-                  "Assata Shakur, born Joanne Chesimard, became a well-known activist associated with radical Black movements in the United States during the 1960s and 1970s.",
-                  "She took part in organizations and movements that fought racism and the violence experienced by Black people.",
-                  "Her story is controversial: she was convicted in a case related to a confrontation in New Jersey, challenged the accusations, and later escaped from prison. She was granted asylum in Cuba."
-            ],
-            "legado": [
-                  "An important figure in debates about Black movements.",
-                  "A political symbol for many activists.",
-                  "Her story raises debates about racism, justice, and state repression."
-            ]
-      },
-      "marie": {
-            "nome": "Marie Curie",
-            "periodo": "1867 – 1934",
-            "resumo": "A pioneer in radioactivity research.",
-            "texto": [
-                  "Marie Curie was born in Poland and moved to Paris to study at a time when few women had access to university education.",
-                  "She researched radioactivity and, together with Pierre Curie, discovered the elements polonium and radium.",
-                  "She was the first person to win two Nobel Prizes, in Physics (1903) and Chemistry (1911), and the first woman to receive a Nobel Prize."
-            ],
-            "legado": [
-                  "Opened doors for women in science.",
-                  "A foundation for research in physics and nuclear medicine.",
-                  "A worldwide example of dedication to research."
-            ]
-      },
-      "katherine": {
-            "nome": "Katherine Johnson",
-            "periodo": "1918 – 2020",
-            "resumo": "The mathematics behind NASA missions.",
-            "texto": [
-                  "Katherine Johnson was a Black American mathematician who worked at NASA during the era of racial segregation.",
-                  "Her trajectory calculations were essential to space missions, including John Glenn’s orbital flight in 1962.",
-                  "In 2015, she received the Presidential Medal of Freedom, the highest civilian honor in the United States."
-            ],
-            "legado": [
-                  "A role model for Black women in science.",
-                  "A decisive contribution to space exploration.",
-                  "An inspiration for mathematics education."
-            ]
-      },
-      "nise": {
-            "nome": "Nise da Silveira",
-            "periodo": "1905 – 1999",
-            "resumo": "Human-centered psychiatry and art.",
-            "texto": [
-                  "Nise da Silveira was born in the Brazilian state of Alagoas and was one of the few women in her medical school class.",
-                  "She opposed violent treatments such as lobotomy and electroshock therapy, and began using painting and modeling as forms of care for patients.",
-                  "Her work led to the creation of the Museum of Images of the Unconscious in Rio de Janeiro."
-            ],
-            "legado": [
-                  "A leading figure in the anti-asylum movement.",
-                  "Recognition of art as part of mental health care.",
-                  "A pioneer of Brazilian science."
-            ]
-      },
-      "hawking": {
-            "nome": "Stephen Hawking",
-            "periodo": "1942 – 2018",
-            "resumo": "Science beyond physical limitations.",
-            "texto": [
-                  "Stephen Hawking was a British theoretical physicist known for his studies of black holes and the origin of the universe.",
-                  "At the age of 21, he was diagnosed with amyotrophic lateral sclerosis (ALS), which gradually affected his ability to move. He later communicated using a speech synthesizer.",
-                  "He wrote “A Brief History of Time,” bringing physics to millions of readers."
-            ],
-            "legado": [
-                  "Science communication for the general public.",
-                  "Contributions to theoretical physics.",
-                  "A reminder that disability does not limit intellectual ability."
-            ]
-      },
-      "keller": {
-            "nome": "Helen Keller",
-            "periodo": "1880 – 1968",
-            "resumo": "Education and the rights of deafblind people.",
-            "texto": [
-                  "Helen Keller lost her hearing and sight as a baby after an illness.",
-                  "With the support of her teacher Anne Sullivan, she learned to communicate and became the first deafblind person to graduate from a university in the United States.",
-                  "A writer and lecturer, she devoted her life to defending the rights of people with disabilities and other social causes."
-            ],
-            "legado": [
-                  "Expanded discussions about inclusion and education.",
-                  "An internationally known author and activist.",
-                  "An inspiration for special education."
-            ]
-      },
-      "frida": {
-            "nome": "Frida Kahlo",
-            "periodo": "1907 – 1954",
-            "resumo": "Art, Mexican identity, and resilience.",
-            "texto": [
-                  "Frida Kahlo was a Mexican painter. She had polio as a child and, in 1925, was seriously injured in a bus accident that left her with pain for the rest of her life.",
-                  "During her recovery, she began painting, often creating self-portraits.",
-                  "Her work celebrates Mexico’s culture, colors, and traditions, while exploring identity, pain, and resistance."
-            ],
-            "legado": [
-                  "An icon of Latin American art.",
-                  "Celebration of Mexican culture.",
-                  "An inspiration for women and people with disabilities."
-            ]
-      },
-      "democracia": {
-            "nome": "Corinthians Democracy",
-            "periodo": "1982 – 1984",
-            "resumo": "Football, participation, and democracy.",
-            "texto": [
-                  "Corinthians Democracy was a movement formed within the Corinthians football club in the early 1980s, when Brazil was moving toward democracy after years of military dictatorship.",
-                  "The movement argued that players, employees, and club directors should collectively take part in important club decisions.",
-                  "Among its best-known members were Sócrates, Wladimir, and Walter Casagrande. Corinthians Democracy showed that football could also be a space for political participation and the defense of citizenship.",
-                  "The movement also became known for supporting Brazil’s return to democracy and the Diretas Já campaign for direct presidential elections."
-            ],
-            "legado": [
-                  "Collective participation in decision-making.",
-                  "Advocacy for democracy and freedom.",
-                  "Football as a space for social expression.",
-                  "One of the most important political movements in the history of Brazilian football."
-            ]
-      },
-      "malala": {
-            "nome": "Malala Yousafzai",
-            "periodo": "1997 – Present",
-            "resumo": "Advocacy for girls’ right to education.",
-            "texto": [
-                  "Malala Yousafzai is a Pakistani activist who advocates for girls’ right to education.",
-                  "From a young age, she spoke out against restrictions imposed on female students by the Taliban. In 2012, she was attacked because of her activism, but continued her work.",
-                  "In 2014, she received the Nobel Peace Prize, becoming the youngest person to receive the award."
-            ],
-            "legado": [
-                  "Advocacy for girls’ education.",
-                  "A symbol of courage and resistance.",
-                  "Promotion of equal opportunities."
-            ]
-      },
-      "rigoberta": {
-            "nome": "Rigoberta Menchú",
-            "periodo": "1959 – Present",
-            "resumo": "Indigenous rights and social justice.",
-            "texto": [
-                  "Rigoberta Menchú is a Guatemalan activist of Maya Indigenous origin, belonging to the K’iche’ people.",
-                  "She fights for Indigenous peoples’ rights, the preservation of their cultures, and an end to discrimination. During Guatemala’s civil war, her family and community faced persecution.",
-                  "In 1992, she received the Nobel Peace Prize for her work defending human rights and social justice."
-            ],
-            "legado": [
-                  "Advocacy for Indigenous peoples.",
-                  "Preservation of Indigenous cultures.",
-                  "An international reference in human rights."
-            ]
-      },
-      "mae": {
-            "nome": "Mae Jemison",
-            "periodo": "1956 – Present",
-            "resumo": "Physician, engineer, and astronaut.",
-            "texto": [
-                  "Mae Jemison is an American physician, engineer, and former astronaut.",
-                  "In 1992, she became the first Black woman to travel into space, taking part in a mission aboard the Space Shuttle Endeavour.",
-                  "After leaving NASA, she began encouraging science and technology education."
-            ],
-            "legado": [
-                  "A milestone in space exploration.",
-                  "Encouragement of science and technology.",
-                  "An inspiration for young scientists."
-            ]
-      },
-      "temple": {
-            "nome": "Temple Grandin",
-            "periodo": "1947 – Present",
-            "resumo": "Science, autism, and animal welfare.",
-            "texto": [
-                  "Temple Grandin is an autistic American scientist, professor, and author.",
-                  "She became known for her research and designs focused on the handling and welfare of livestock.",
-                  "She also gives talks and writes about autism, inclusion, and different ways of thinking, helping broaden understanding of the subject."
-            ],
-            "legado": [
-                  "Contributions to animal welfare.",
-                  "Public education about autism and inclusion.",
-                  "Recognition of different ways of thinking."
-            ]
-      },
-      "ada": {
-            "nome": "Ada Lovelace",
-            "periodo": "1815 – 1852",
-            "resumo": "A pioneer of computer programming.",
-            "texto": [
-                  "Ada Lovelace was a British mathematician and writer, considered one of the pioneers of computer programming.",
-                  "She studied the ideas behind the Analytical Engine designed by Charles Babbage and wrote an algorithm that could be carried out by the machine.",
-                  "Her work helped show that computers could perform operations beyond simple mathematical calculations."
-            ],
-            "legado": [
-                  "A pioneer of programming.",
-                  "A historical contribution to computing.",
-                  "An inspiration for women in technology."
-            ]
-      },
-      "turing": {
-            "nome": "Alan Turing",
-            "periodo": "1912 – 1954",
-            "resumo": "Mathematics and the foundations of computing.",
-            "texto": [
-                  "Alan Turing was a British mathematician, logician, and computer scientist.",
-                  "During World War II, he took part in efforts to decipher encrypted messages used by Nazi Germany.",
-                  "His ideas contributed to the development of modern computing and artificial intelligence, making him a key figure in the history of computer science."
-            ],
-            "legado": [
-                  "Theoretical foundations of computing.",
-                  "A contribution to wartime codebreaking.",
-                  "Influence on the development of artificial intelligence."
-            ]
-      },
-      "santos": {
-            "nome": "Santos Dumont",
-            "periodo": "1873 – 1932",
-            "resumo": "A Brazilian aviation pioneer.",
-            "texto": [
-                  "Alberto Santos Dumont was a Brazilian inventor and aviator who made important contributions to the development of airships and aircraft.",
-                  "In 1906, he made a public flight in Paris with the 14-bis, considered a milestone in the history of aviation.",
-                  "He devoted his life to experimenting with and improving flying machines."
-            ],
-            "legado": [
-                  "Pioneering work in aviation.",
-                  "The historic achievement of the 14-bis.",
-                  "A symbol of Brazilian inventiveness."
-            ]
-      },
-      "bob": {
-            "nome": "Bob Marley",
-            "periodo": "1945 – 1981",
-            "resumo": "Reggae, Jamaican culture, and messages of peace.",
-            "texto": [
-                  "Bob Marley was a Jamaican singer and songwriter who helped make reggae popular around the world.",
-                  "His music addressed peace, freedom, inequality, and resistance to oppression, while also sharing aspects of Jamaican culture and the Rastafari movement.",
-                  "Songs such as “One Love” became symbols of unity and hope, and his legacy continues to influence musicians in many countries."
-            ],
-            "legado": [
-                  "Helped popularize reggae worldwide.",
-                  "Messages of peace and freedom.",
-                  "Shared Jamaican culture with the world."
-            ]
-      },
-      "hayao": {
-            "nome": "Hayao Miyazaki",
-            "periodo": "1941 – Present",
-            "resumo": "Animation, fantasy, and Japanese culture.",
-            "texto": [
-                  "Hayao Miyazaki is a Japanese director, screenwriter, and animator, and a co-founder of Studio Ghibli.",
-                  "He is known for films that combine fantasy, Japanese culture, nature, and reflections on society, such as My Neighbor Totoro, Spirited Away, and Howl’s Moving Castle.",
-                  "His works are recognized for their rich visuals and their themes of friendship, respect for nature, and growing up."
-            ],
-            "legado": [
-                  "A worldwide reference in animation.",
-                  "Celebration of Japanese culture.",
-                  "Stories about nature and humanity."
-            ]
-      },
-      "miriam": {
-            "nome": "Miriam Makeba",
-            "periodo": "1932 – 2008",
-            "resumo": "African music and the struggle against apartheid.",
-            "texto": [
-                  "Miriam Makeba was a South African singer known internationally as “Mama Africa.”",
-                  "She used her music to share African culture and speak out against apartheid. Because she opposed the segregationist regime, she spent many years outside South Africa.",
-                  "Alongside her musical career, she became an important activist against racism and in defense of human rights."
-            ],
-            "legado": [
-                  "Promoted African music and culture.",
-                  "Activism against apartheid.",
-                  "Advocacy for human rights."
-            ]
-      }
-};
-
-    const temas = { todos: 'All', cultural: 'Cultural diversity', racial: 'Racial diversity', ciencia: 'Women in science', pcd: 'People with disabilities', profissoes: 'Different professions', culturas: 'Different cultures' };
-
-    const porTema = { cultural: ['racionais', 'democracia', 'frida', 'milton', 'sankara', 'malala', 'rigoberta'], racial: ['malcolm', 'king', 'mandela', 'angela', 'ruby', 'assata', 'racionais', 'sankara', 'milton', 'katherine', 'rigoberta', 'miriam'], ciencia: ['marie', 'katherine', 'nise', 'mae'], pcd: ['hawking', 'keller', 'frida', 'temple'], profissoes: ['milton', 'marie', 'katherine', 'nise', 'hawking', 'king', 'angela', 'brizola', 'racionais', 'democracia', 'ada', 'turing', 'santos', 'mae', 'temple'], culturas: ['mandela', 'sankara', 'frida', 'racionais', 'marie', 'malcolm', 'bob', 'hayao', 'miriam', 'rigoberta'] };
-
-
-
-    const $ = id => document.getElementById(id);
-
-    const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-
-    const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-
-    const temasDe = id => Object.keys(porTema).filter(t => porTema[t].includes(id));
-
-    const tag = (t, cls = 'bg-vinho/10 text-vinho') => `<span class="text-xs font-semibold rounded-full px-3 py-1 ${cls}">${temas[t]}</span>`;
-
-    let temaAtual = 'todos';
-
-
-
-    function renderCards() {
-
-      const q = norm($('busca').value.trim());
-
-      const base = temaAtual === 'todos' ? Object.keys(historias) : porTema[temaAtual];
-
-      const ids = base.filter(id => { const h = historias[id]; return !q || norm(h.nome + ' ' + h.resumo + ' ' + h.texto.join(' ')).includes(q) });
-
-      $('cards').innerHTML = ids.map(id => {
-
-        const h = historias[id];
-
-        return `<button type="button" onclick="mostrarHistoria('${id}')" class="fade text-left bg-white rounded-xl overflow-hidden shadow-lg border-b-[5px] border-vinho transition duration-300 hover:-translate-y-2 hover:bg-[#fff8e8]"><div class="w-full h-44 bg-gradient-to-br from-[#111] to-vinho flex items-center justify-center text-ouro font-serif text-6xl" aria-hidden="true">${esc(h.nome[0])}</div><div class="p-5"><h3 class="text-vinho font-bold">${esc(h.nome)}</h3><p class="text-xs text-gray-500 mb-2">${h.periodo}</p><p class="text-sm text-gray-600 leading-normal">${h.resumo}</p></div></button>`;
-
-      }).join('');
-
-      $('vazio').classList.toggle('hidden', ids.length > 0);
-
-      $('contagem').textContent = ids.length + (ids.length === 1 ? ' story' : ' stories');
-
-    }
-
-    function selecionarTema(tema, rolar = true) {
-
-      temaAtual = tema;
-
-      document.querySelectorAll('#temas button').forEach(b => {
-
-        const ativo = b.dataset.tema === tema;
-
-        b.setAttribute('aria-pressed', ativo);
-
-        b.className = 'px-5 py-2 rounded-full font-semibold text-sm border-2 transition-colors duration-300 ' + (ativo ? 'bg-ouro border-ouro text-[#111]' : 'border-white/40 text-white hover:border-ouro hover:text-ouro');
-
-      });
-
-      renderCards();
-
-      $('historia').classList.add('hidden');
-
-      if (rolar) $('escolha').scrollIntoView();
-
-    }
-
-    $('temas').innerHTML = Object.entries(temas).map(([id, nome]) => {
-
-      const n = id === 'todos' ? Object.keys(historias).length : porTema[id].length;
-
-      return `<button type="button" data-tema="${id}" onclick="selecionarTema('${id}')">${nome} <span class="opacity-70">(${n})</span></button>`;
-
-    }).join('');
-
-    $('busca').addEventListener('input', renderCards);
-
-
-
-    function mostrarHistoria(id, atualizaHash = true) {
-
-      const h = historias[id]; if (!h) return;
-
-      const ids = Object.keys(historias), i = ids.indexOf(id);
-
-      $('nome').textContent = h.nome;
-
-      $('periodo').textContent = h.periodo;
-
-      $('tags').innerHTML = temasDe(id).map(t => tag(t)).join('');
-
-      $('conteudo').innerHTML = h.texto.map(p => `<p class="text-[1.05rem] leading-[1.9] mb-5">${esc(p)}</p>`).join('')
-
-        + `<h3 class="text-vinho font-bold text-lg mt-8 mb-4">Legacy</h3><ul class="list-disc pl-6 leading-loose">${h.legado.map(l => `<li>${esc(l)}</li>`).join('')}</ul>`;
-
-      const rel = [...new Set(temasDe(id).flatMap(t => porTema[t]))].filter(x => x !== id).slice(0, 4);
-
-      $('relacionados').innerHTML = rel.length ? `<h3 class="text-vinho font-bold text-lg mb-4">Explore related stories</h3><div class="flex flex-wrap gap-3">${rel.map(r => `<button type="button" onclick="mostrarHistoria('${r}')" class="px-4 py-2 rounded-full border-2 border-vinho text-vinho font-semibold text-sm hover:bg-vinho hover:text-white transition">${esc(historias[r].nome)}</button>`).join('')}</div>` : '';
-
-      const a = ids[(i - 1 + ids.length) % ids.length], p = ids[(i + 1) % ids.length];
-
-      $('ant').textContent = '← ' + historias[a].nome; $('ant').onclick = () => mostrarHistoria(a);
-
-      $('prox').textContent = historias[p].nome + ' →'; $('prox').onclick = () => mostrarHistoria(p);
-
-      document.title = h.nome + ' | Stories That Changed the World';
-
-      $('historia').classList.remove('hidden');
-
-      $('historia').scrollIntoView();
-
-      $('nome').focus({ preventScroll: true });
-
-      if (atualizaHash && location.hash !== '#' + id) history.pushState(null, '', '#' + id);
-
-    }
-
-    function voltar() {
-
-      $('historia').classList.add('hidden');
-
-      document.title = 'Stories That Changed the World';
-
-      if (location.hash) history.pushState(null, '', location.pathname + location.search);
-
-      $('escolha').scrollIntoView();
-
-    }
-
-    function rotear() {
-
-      const id = location.hash.slice(1);
-
-      if (historias[id]) mostrarHistoria(id, false);
-
-      else if (!$('historia').classList.contains('hidden')) { $('historia').classList.add('hidden'); document.title = 'Stories That Changed the World' }
-
-    }
-
-    window.addEventListener('hashchange', rotear);
-
-    selecionarTema('todos', false);
-
-    rotear();
-
-  </script>
+function renderGallery() {
+
+    const search = document.getElementById("search").value.toLowerCase();
+    const area = document.getElementById("areaFilter").value;
+
+    const filtered = personalities.filter(person => {
+
+        const searchableText = [
+            person.name,
+            person.country,
+            person.tag,
+            person.bio,
+            person.contribution,
+            person.importance
+        ].join(" ").toLowerCase();
+
+        const matchesSearch = searchableText.includes(search);
+
+        const matchesArea =
+            (currentFilter === "All" || person.areas.includes(currentFilter)) &&
+            (area === "All" || person.areas.includes(area));
+
+        return matchesSearch && matchesArea;
+    });
+
+    document.getElementById("resultCount").textContent =
+        `${filtered.length} of ${personalities.length} people found`;
+
+    document.getElementById("emptyMessage").classList.toggle(
+        "hidden",filtered.length > 0
+    );
+
+    document.getElementById("galleryGrid").innerHTML =
+        filtered.map(person => {
+
+            const index = personalities.indexOf(person);
+
+            return `
+            <article class="person-card bg-paper overflow-hidden cursor-pointer"
+                onclick="openModal(${index})">
+
+                <div class="h-64 relative flex items-center justify-center overflow-hidden"
+                    style="background:linear-gradient(135deg,${person.color},#252525)">
+
+                    <span class="text-white/70 font-serif text-7xl font-bold">
+                        ${person.initials}
+                    </span>
+
+                    <img
+                        src="${person.image}"
+                        alt="Portrait of ${person.name}"
+                        referrerpolicy="no-referrer"
+                        class="absolute inset-0 w-full h-full object-cover"
+                        loading="lazy"
+                        onerror="this.remove()">
+
+                    <span class="absolute top-4 left-4 bg-[#171522]/85 text-white text-xs px-3 py-2">
+                        ${person.areas[0]}
+                    </span>
+                </div>
+
+                <div class="p-6">
+
+                    <p class="text-redx text-xs font-bold uppercase tracking-widest">
+                        ${person.country}
+                    </p>
+
+                    <h3 class="font-serif text-2xl mt-2">
+                        ${person.name}
+                    </h3>
+
+                    <p class="text-gray-400 text-xs mt-1">
+                        ${person.years}
+                    </p>
+
+                    <p class="text-gray-600 text-sm leading-relaxed mt-4">
+                        ${person.bio}
+                    </p>
+
+                    <div class="border-t border-gray-200 mt-5 pt-4 flex justify-between items-center">
+                        <span class="text-xs text-gray-500">${person.tag}</span>
+                        <span class="text-purplex font-bold">→</span>
+                    </div>
+
+                </div>
+            </article>
+            `;
+        }).join("");
+}
+
+// ======================================
+// FILTERS
+// ======================================
+
+function setFilter(area,button) {
+
+    currentFilter = area;
+
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.classList.remove("filter-active");
+    });
+
+    button.classList.add("filter-active");
+
+    document.getElementById("areaFilter").value = "All";
+
+    renderGallery();
+}
+
+// ======================================
+// MODAL
+// ======================================
+
+function openModal(index) {
+
+    const person = personalities[index];
+
+    document.getElementById("modalContent").innerHTML = `
+
+        <div class="h-64 relative flex items-center justify-center"
+            style="background:linear-gradient(135deg,${person.color},#222)">
+
+            <span class="text-white/70 text-8xl font-serif font-bold">
+                ${person.initials}
+            </span>
+
+            <img src="${person.image}"
+                alt="Portrait of ${person.name}"
+                referrerpolicy="no-referrer"
+                class="absolute inset-0 w-full h-full object-cover"
+                onerror="this.remove()">
+        </div>
+
+        <div class="p-8">
+
+            <span class="text-redx text-xs uppercase font-bold tracking-widest">
+                ${person.areas.join(" • ")}
+            </span>
+
+            <h2 class="font-serif text-4xl mt-3">
+                ${person.name}
+            </h2>
+
+            <p class="text-gray-400 mt-2">
+                ${person.years} • ${person.country}
+            </p>
+
+            <h3 class="font-bold mt-8 mb-2 text-purplex">Biography</h3>
+
+            <p class="text-gray-600 leading-relaxed">
+                ${person.bio}
+            </p>
+
+            <h3 class="font-bold mt-6 mb-2 text-orangex">
+                Key contributions
+            </h3>
+
+            <p class="text-gray-600 leading-relaxed">
+                ${person.contribution}
+            </p>
+
+            <h3 class="font-bold mt-6 mb-2 text-bluex">
+                Historical importance
+            </h3>
+
+            <p class="text-gray-600 leading-relaxed">
+                ${person.importance}
+            </p>
+
+            <button onclick="closeModal()"
+                class="mt-8 bg-[#171522] text-white px-7 py-3 hover:bg-purplex transition">
+                BACK TO THE GALLERY
+            </button>
+
+        </div>
+    `;
+
+    const modal = document.getElementById("modal");
+
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+
+    document.body.style.overflow = "hidden";
+}
+
+// ======================================
+// TIMELINE
+// ======================================
+
+function renderTimeline() {
+
+    const filter = document.getElementById("timelineFilter").value;
+
+    const filtered = events.filter(event =>
+        filter === "All" || event.place === filter
+    );
+
+    document.getElementById("timelineContent").innerHTML =
+        filtered.map(event => `
+            <div class="timeline-item">
+
+                <div class="timeline-dot"
+                    style="background:${event.color}">
+                </div>
+
+                <article class="timeline-card bg-white shadow-sm p-6 border-l-4"
+                    style="border-color:${event.color}">
+
+                    <span class="font-serif text-3xl font-bold"
+                        style="color:${event.color}">
+                        ${event.year}
+                    </span>
+
+                    <span class="inline-block ml-2 text-xs bg-gray-100 text-gray-500 px-3 py-1">
+                        ${event.place}
+                    </span>
+
+                    <h3 class="font-serif text-xl md:text-2xl mt-3">
+                        ${event.title}
+                    </h3>
+
+                    <p class="text-gray-600 text-sm leading-relaxed mt-3">
+                        ${event.description}
+                    </p>
+
+                </article>
+            </div>
+        `).join("");
+}
+
+// ======================================
+// CLOSE MODAL
+// ======================================
+
+function closeModal(event) {
+
+    if (event && event.target.id !== "modal") return;
+
+    const modal = document.getElementById("modal");
+
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+
+    document.body.style.overflow = "";
+}
+
+// ======================================
+// MOBILE MENU
+// ======================================
+
+function toggleMenu() {
+    document.getElementById("mobileMenu").classList.toggle("hidden");
+}
+
+document.addEventListener("keydown",event => {
+    if(event.key === "Escape") closeModal();
+});
+
+document.querySelectorAll("#mobileMenu a").forEach(link => {
+    link.addEventListener("click",() => {
+        document.getElementById("mobileMenu").classList.add("hidden");
+    });
+});
+
+// ======================================
+// INITIALIZATION
+// ======================================
+
+createFilters();
+renderGallery();
+renderTimeline();
+
+</script>
 
 </body>
-
-
-
 </html>
