@@ -1,202 +1,784 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
+
+
 <head>
+
   <meta charset="utf-8" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <meta name="description"
-    content="An educational project about people and movements that transformed society: struggle, culture, science and democracy." />
+
+    content="An educational project about people and movements that changed society through activism, culture, science, and democracy." />
+
   <title>Stories That Changed the World</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
   <link
+
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+
     rel="stylesheet" />
+
   <script src="https://cdn.tailwindcss.com"></script>
+
   <script>
+
     tailwind.config = { theme: { extend: { fontFamily: { sans: ['Montserrat', 'sans-serif'], serif: ['"Playfair Display"', 'serif'] }, colors: { vinho: '#8b1e1e', ouro: '#d6ad38', papel: '#f4f1ea' } } } }
+
   </script>
+
   <style>
+
     @media (prefers-reduced-motion:no-preference) {
+
       html {
+
         scroll-behavior: smooth
+
       }
+
     }
+
+
 
     .fade {
+
       animation: fade .4s ease both
+
     }
+
+
 
     @keyframes fade {
+
       from {
+
         opacity: 0;
+
         transform: translateY(8px)
+
       }
+
+
 
       to {
+
         opacity: 1;
+
         transform: none
+
       }
+
     }
+
+
 
     :focus-visible {
+
       outline: 3px solid #d6ad38;
+
       outline-offset: 2px
+
     }
+
   </style>
+
 </head>
 
+
+
 <body class="font-sans bg-papel text-[#1b1b1b]">
+
   <a href="#escolha"
+
     class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-ouro focus:text-[#111] focus:p-3">Skip to
+
     content</a>
 
+
+
   <header class="bg-gradient-to-br from-[#111] to-[#7a1717] text-white text-center px-5 pt-5 pb-14">
+
     <div class="flex justify-end max-w-6xl mx-auto">
-      <a class="px-5 py-2 rounded-full bg-ouro text-[#111] font-bold hover:bg-white transition" href="index.html"
+
+      <a class="px-5 py-2 rounded-full bg-ouro text-[#111] font-bold hover:bg-white transition" href="historias_que_mudaram_o_mundo_atualizado.html"
+
         hreflang="pt-BR">🇧🇷 Português</a>
+
     </div>
+
     <h1 class="font-serif font-bold text-[clamp(2.5rem,6vw,4.5rem)] mt-10 mb-4">Stories That <span
+
         class="text-ouro">Changed the World</span></h1>
-    <p class="max-w-[750px] mx-auto leading-8 text-gray-200">Choose a person or movement to learn about their journey,
-      struggles, ideas and legacy for society.</p>
-    <nav class="mt-8 flex flex-wrap justify-center gap-3" id="temas" aria-label="Filter by theme"></nav>
+
+    <p class="max-w-[750px] mx-auto leading-8 text-gray-200">Choose a person or movement to explore their story, struggles, ideas, and legacy.</p>
+
+    <nav class="mt-8 flex flex-wrap justify-center gap-3" id="temas" aria-label="Filter by topic"></nav>
+
   </header>
 
+
+
   <main>
+
     <section class="px-[6%] sm:px-[8%] py-16" id="escolha">
+
       <div class="text-center mb-8">
-        <h2 class="font-serif font-bold text-4xl text-vinho">Who would you like to meet?</h2>
-        <p class="mt-3 text-gray-600">Click on a person to discover their story.</p>
+
+        <h2 class="font-serif font-bold text-4xl text-vinho">Who would you like to learn about?</h2>
+
+        <p class="mt-3 text-gray-600">Select a person to discover their story.</p>
+
       </div>
+
       <div class="max-w-md mx-auto mb-3">
-        <label for="busca" class="sr-only">Search people</label>
+
+        <label for="busca" class="sr-only">Search for a person</label>
+
         <input id="busca" type="search" placeholder="🔎 Search by name or topic…" autocomplete="off"
+
           class="w-full rounded-full border-2 border-gray-300 focus:border-vinho px-5 py-3 bg-white" />
+
       </div>
+
       <p id="contagem" class="text-center text-sm text-gray-500 mb-8" aria-live="polite"></p>
+
       <div class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-6" id="cards"></div>
-      <p id="vazio" class="hidden text-center text-gray-600 py-10">No stories found. Try another search or theme.</p>
+
+      <p id="vazio" class="hidden text-center text-gray-600 py-10">No stories found. Try another search or topic.</p>
+
     </section>
+
+
 
     <section class="hidden bg-white px-[6%] sm:px-[8%] py-16 min-h-screen" id="historia" aria-labelledby="nome">
+
       <article class="max-w-[1000px] mx-auto fade">
-        <button class="mb-8 text-vinho font-bold hover:underline" onclick="voltar()">← Back to people</button>
+
+        <button class="mb-8 text-vinho font-bold hover:underline" onclick="voltar()">← Back to all people</button>
+
         <h2 class="font-serif font-bold text-4xl sm:text-5xl text-vinho mb-2.5" id="nome" tabindex="-1"></h2>
+
         <span class="inline-block bg-[#111] text-white px-[18px] py-2 rounded-full mb-4 font-bold" id="periodo"></span>
+
         <div class="flex flex-wrap gap-2 mb-8" id="tags"></div>
+
         <div id="conteudo"></div>
+
         <div id="relacionados" class="mt-12"></div>
+
         <div class="mt-10 flex flex-wrap justify-between gap-3">
+
           <button id="ant" class="bg-gray-100 hover:bg-ouro px-5 py-3 rounded-md font-semibold transition"></button>
+
           <button id="prox" class="bg-gray-100 hover:bg-ouro px-5 py-3 rounded-md font-semibold transition"></button>
+
         </div>
+
         <button
+
           class="mt-8 bg-vinho hover:bg-[#111] text-white font-bold px-6 py-4 rounded-md transition-colors duration-300"
+
           onclick="voltar()">← CHOOSE ANOTHER PERSON</button>
+
       </article>
+
     </section>
+
   </main>
 
+
+
   <footer class="text-center bg-[#111] text-white p-8">
+
     <p class="font-semibold">Stories That Changed the World</p>
-    <p class="text-gray-400 text-sm mt-1">An educational project about struggle, culture, democracy and social
-      transformation.</p>
+
+    <p class="text-gray-400 text-sm mt-1">An educational project about activism, culture, democracy, and social change.</p>
+
   </footer>
 
+
+
   <script>
+
     const historias = {
-      malcolm: { nome: 'Malcolm X', periodo: '1925 – 1965', resumo: 'Black liberation and human rights.', texto: ['Malcolm X, born Malcolm Little, was one of the most important leaders of the Black struggle in the United States. His childhood was marked by racism and by violence against his family.', 'After a period in prison, Malcolm began an intense process of education and transformation. He studied history and came to deeply understand the racism embedded in American society.', 'He became one of the leading voices of Black consciousness, defending Black pride, Black self-determination and human rights.'], legado: ['A symbol of Black consciousness.', 'Defense of human rights.', 'An inspiration for anti-racist movements.'] },
-      marighella: { nome: 'Carlos Marighella', periodo: '1911 – 1969', resumo: 'Resistance to the Brazilian dictatorship.', texto: ['Carlos Marighella was born in Salvador, Bahia, and was an important Brazilian political figure. From a young age he took part in political movements and drew close to communist ideas.', 'During the Brazilian military dictatorship, which began in 1964, he became one of the regime\'s main opponents and helped organize political resistance.', 'Marighella was killed in 1969 during an operation by the repressive forces. His story remains important in debates about dictatorship, democracy and political resistance in Brazil.'], legado: ['A symbol of resistance to the military dictatorship.', 'An important figure in Brazilian political history.', 'An inspiration for studies on democracy.'] },
-      racionais: { nome: "Racionais MC's", periodo: '1988 – Present', resumo: 'The voice of the periphery and of Brazilian rap.', texto: ["Racionais MC's emerged in São Paulo and became one of the most important groups in the history of Brazilian music.", 'Made up of Mano Brown, Ice Blue, Edi Rock and KL Jay, the group used rap as a tool to speak about racism, inequality, violence and the reality of the urban peripheries.', 'The group gave visibility to experiences that were often ignored by society and by the traditional media.'], legado: ['Revolutionized Brazilian rap.', 'Gave a voice to the periphery.', 'Turned music into an instrument of social criticism.'] },
-      angela: { nome: 'Angela Davis', periodo: '1944 – Present', resumo: 'Feminism, racism and social justice.', texto: ['Angela Davis is a philosopher, professor and one of the most important political activists in the United States.', 'Her path is marked by the fight against racism, sexism, social inequality and mass incarceration.', 'She became world-famous after her arrest in 1970, which sparked a large international campaign for her release. She was later acquitted.'], legado: ['A major reference in Black feminism.', 'Defense of the rights of Black people.', 'Criticism of the prison system.'] },
-      brizola: { nome: 'Leonel Brizola', periodo: '1922 – 2004', resumo: 'Democracy and public education.', texto: ['Leonel Brizola was an important Brazilian political leader, known mainly for defending public education and democracy.', 'He took part in the Legality Campaign, a movement that defended the Brazilian Constitution during a political crisis in 1961.', 'After the military coup of 1964, he lived in exile. He later returned to Brazil and continued his political career.'], legado: ['Defense of public education.', 'Participation in the fight for democracy.', 'Historical importance in Brazilian politics.'] },
-      king: { nome: 'Martin Luther King Jr.', periodo: '1929 – 1968', resumo: 'Civil rights and nonviolent resistance.', texto: ['Martin Luther King Jr. was a pastor and one of the greatest leaders of the civil rights movement in the United States.', 'He advocated nonviolent resistance strategies and took part in marches, protests and movements against racial segregation.', 'In 1964, he received the Nobel Peace Prize. His struggle helped profoundly transform American society.'], legado: ['Defense of civil rights.', 'Fight against racial segregation.', 'A worldwide symbol of nonviolent resistance.'] },
-      mandela: { nome: 'Nelson Mandela', periodo: '1918 – 2013', resumo: 'The fight against apartheid.', texto: ['Nelson Mandela was one of the greatest symbols of the fight against apartheid, South Africa\'s system of racial segregation.', 'Because of his political activity, he spent 27 years in prison. After his release, he took part in the negotiations to end apartheid.', 'In 1994, he became the first Black president democratically elected in South Africa.'], legado: ['The fight against apartheid.', 'Defense of democracy.', 'A worldwide symbol of resistance.'] },
-      sankara: { nome: 'Thomas Sankara', periodo: '1949 – 1987', resumo: 'Revolution and African sovereignty.', texto: ['Thomas Sankara was the president of Burkina Faso and an important African political figure.', 'He defended the economic independence of the African continent, the fight against corruption and better living conditions for the population.', 'He also supported policies focused on education, health and women\'s rights.'], legado: ['Defense of African sovereignty.', 'Fight against corruption.', 'Promotion of women\'s rights.'] },
-      ruby: { nome: 'Ruby Bridges', periodo: '1954 – Present', resumo: 'The fight against segregation in schools.', texto: ['Ruby Bridges became a symbol of the fight against racial segregation in the United States while still a child.', 'In 1960, at the age of six, Ruby was one of the first Black children to attend a school previously reserved only for white students.', 'Despite facing racist protests and hostility, she kept going to school and became a symbol of the struggle for civil rights.'], legado: ['A symbol of racial integration.', 'An inspiration for inclusive education.', 'A reference for civil rights.'] },
-      milton: { nome: 'Milton Santos', periodo: '1926 – 2001', resumo: 'Geography, territory and globalization.', texto: ['Milton Santos was one of the greatest geographers in history and one of the most internationally recognized Brazilian intellectuals.', 'His studies analyzed territory, globalization, cities and social inequalities.', 'Milton Santos questioned how globalization could increase inequalities between different groups and countries.'], legado: ['Transformed geographical studies.', 'Critique of the inequalities of globalization.', 'International recognition in Geography.'] },
-      assata: { nome: 'Assata Shakur', periodo: '1947 – Present', resumo: 'Activism and Black movements.', texto: ['Assata Shakur, born Joanne Chesimard, became a well-known activist linked to radical Black movements in the United States in the 1960s and 1970s.', 'She took part in organizations and movements that fought against racism and the violence suffered by the Black population.', 'Her story is controversial: she was convicted in a case related to a shootout in New Jersey, disputed the charges, and later escaped from prison, receiving asylum in Cuba.'], legado: ['An important figure in debates about Black movements.', 'A political symbol for many activists.', 'Sparks debates about racism, justice and state repression.'] },
-      marie: { nome: 'Marie Curie', periodo: '1867 – 1934', resumo: 'Pioneer of radioactivity.', texto: ['Marie Curie was born in Poland and moved to Paris to study, at a time when few women had access to university.', 'She researched radioactivity and, together with Pierre Curie, discovered the elements polonium and radium.', 'She was the first person to win two Nobel Prizes, in Physics (1903) and Chemistry (1911), and the first woman to receive a Nobel.'], legado: ['Opened the way for women in science.', 'A foundation for physics and nuclear medicine.', 'A worldwide example of dedication to research.'] },
-      katherine: { nome: 'Katherine Johnson', periodo: '1918 – 2020', resumo: 'The mathematician behind NASA\'s missions.', texto: ['Katherine Johnson was an African American mathematician who worked at NASA during the era of racial segregation.', 'Her trajectory calculations were essential to space missions, including John Glenn\'s orbital flight in 1962.', 'In 2015, she received the Presidential Medal of Freedom, the highest civilian honor in the United States.'], legado: ['A reference for Black women in science.', 'A decisive contribution to space exploration.', 'An inspiration for mathematics education.'] },
-      nise: { nome: 'Nise da Silveira', periodo: '1905 – 1999', resumo: 'Humane psychiatry and art.', texto: ['Nise da Silveira was born in Alagoas and was one of the few women in her class at medical school.', 'She opposed violent treatments such as lobotomy and electroshock, and began using painting and modeling as a form of care for her patients.', 'Her work gave rise to the Museum of Images of the Unconscious, in Rio de Janeiro.'], legado: ['A reference of the anti-asylum movement.', 'Valuing art in mental health care.', 'A pioneer of Brazilian science.'] },
-      hawking: { nome: 'Stephen Hawking', periodo: '1942 – 2018', resumo: 'Science beyond the limits of the body.', texto: ['Stephen Hawking was a British theoretical physicist, known for his studies on black holes and the origin of the universe.', 'At 21 he was diagnosed with amyotrophic lateral sclerosis (ALS), which gradually took away his movement. He began to communicate through a speech synthesizer.', 'He wrote "A Brief History of Time", which brought physics to millions of readers.'], legado: ['Science communication for the general public.', 'Contributions to theoretical physics.', 'A symbol that disability does not limit the intellect.'] },
-      keller: { nome: 'Helen Keller', periodo: '1880 – 1968', resumo: 'Education and rights of deafblind people.', texto: ['Helen Keller lost her hearing and sight as a baby, after an illness.', 'With the support of her teacher Anne Sullivan, she learned to communicate and became the first deafblind person to graduate from a university in the United States.', 'A writer and lecturer, she dedicated her life to defending the rights of people with disabilities and other social causes.'], legado: ['Broadened the debate on inclusion and education.', 'International author and activist.', 'An inspiration for special education.'] },
-      frida: { nome: 'Frida Kahlo', periodo: '1907 – 1954', resumo: 'Art, Mexican identity and resilience.', texto: ['Frida Kahlo was a Mexican painter. She had polio as a child and, in 1925, suffered a serious bus accident that left her in pain for the rest of her life.', 'It was during her recovery that she began to paint, often in self-portraits.', 'Her work celebrates the culture, colors and traditions of Mexico, while also dealing with identity, pain and resistance.'], legado: ['An icon of Latin American art.', 'Celebration of Mexican culture.', 'A reference for women and people with disabilities.'] },
-      democracia: { nome: 'Corinthians Democracy', periodo: '1982 – 1984', resumo: 'Football, participation and democracy.', texto: ['Corinthians Democracy was a movement created inside the Corinthians football club in the early 1980s, when Brazil was still going through the return to democracy after years of military dictatorship.', 'The movement argued that players, staff and directors should take part together in the club\'s important decisions.', 'Among its best-known names were Sócrates, Wladimir and Walter Casagrande. Corinthians Democracy showed that football could also be a space for political participation and the defense of citizenship.', 'The movement also became known for supporting Brazil\'s return to democracy and the Diretas Já campaign for direct elections.'], legado: ['Collective participation in decisions.', 'Defense of democracy and freedom.', 'Football used as a space for social expression.', 'One of the greatest political movements in the history of Brazilian football.'] }
-    };
+      "malcolm": {
+            "nome": "Malcolm X",
+            "periodo": "1925 – 1965",
+            "resumo": "Black liberation and human rights.",
+            "texto": [
+                  "Malcolm X, born Malcolm Little, was one of the most important leaders in the struggle for the rights of Black people in the United States. His childhood was marked by racism and violence against his family.",
+                  "After spending time in prison, Malcolm began an intense process of education and personal transformation. He studied history and developed a deep understanding of racism in American society.",
+                  "He became one of the leading voices of Black consciousness, advocating pride in Black identity, Black self-determination, and human rights."
+            ],
+            "legado": [
+                  "A symbol of Black consciousness.",
+                  "Advocacy for human rights.",
+                  "An inspiration to anti-racist movements."
+            ]
+      },
+      "marighella": {
+            "nome": "Carlos Marighella",
+            "periodo": "1911 – 1969",
+            "resumo": "Resistance to Brazil’s dictatorship.",
+            "texto": [
+                  "Carlos Marighella was born in Salvador, in the state of Bahia, and became an important Brazilian political figure. From a young age, he took part in political movements and became involved with communist ideas.",
+                  "During the Brazilian military dictatorship, which began in 1964, he became one of the regime’s main opponents and took part in organizing political resistance.",
+                  "Marighella was killed in 1969 during a government repression operation. His life remains important in discussions about dictatorship, democracy, and political resistance in Brazil."
+            ],
+            "legado": [
+                  "A symbol of resistance to the military dictatorship.",
+                  "An important figure in Brazilian political history.",
+                  "An inspiration for the study of democracy."
+            ]
+      },
+      "racionais": {
+            "nome": "Racionais MC's",
+            "periodo": "1988 – Present",
+            "resumo": "The voice of the outskirts and Brazilian rap.",
+            "texto": [
+                  "Racionais MC's emerged in São Paulo and became one of the most important groups in the history of Brazilian music.",
+                  "Formed by Mano Brown, Ice Blue, Edi Rock, and KL Jay, the group used rap to address racism, inequality, violence, and life in the urban outskirts.",
+                  "The group brought visibility to experiences that were often ignored by society and traditional media."
+            ],
+            "legado": [
+                  "Revolutionized Brazilian rap.",
+                  "Gave a voice to communities on the urban outskirts.",
+                  "Turned music into a tool for social criticism."
+            ]
+      },
+      "angela": {
+            "nome": "Angela Davis",
+            "periodo": "1944 – Present",
+            "resumo": "Feminism, racism, and social justice.",
+            "texto": [
+                  "Angela Davis is a philosopher, professor, and one of the most important political activists in the United States.",
+                  "Her work has focused on fighting racism, sexism, social inequality, and mass incarceration.",
+                  "She became internationally known after her arrest in 1970, which sparked a major campaign around the world calling for her freedom. She was later acquitted."
+            ],
+            "legado": [
+                  "A leading reference in Black feminism.",
+                  "Advocacy for the rights of Black people.",
+                  "Criticism of the prison system."
+            ]
+      },
+      "brizola": {
+            "nome": "Leonel Brizola",
+            "periodo": "1922 – 2004",
+            "resumo": "Democracy and public education.",
+            "texto": [
+                  "Leonel Brizola was an important Brazilian political leader, best known for defending public education and democracy.",
+                  "He took part in the Legality Campaign, a movement that defended the Brazilian Constitution during a political crisis in 1961.",
+                  "After the 1964 military coup, he lived in exile. He later returned to Brazil and continued his political work."
+            ],
+            "legado": [
+                  "Advocacy for public education.",
+                  "Participation in the struggle for democracy.",
+                  "An important place in Brazilian political history."
+            ]
+      },
+      "king": {
+            "nome": "Martin Luther King Jr.",
+            "periodo": "1929 – 1968",
+            "resumo": "Civil rights and nonviolent resistance.",
+            "texto": [
+                  "Martin Luther King Jr. was a pastor and one of the greatest leaders of the civil rights movement in the United States.",
+                  "He advocated nonviolent resistance and took part in marches, protests, and campaigns against racial segregation.",
+                  "In 1964, he received the Nobel Peace Prize. His struggle helped profoundly transform American society."
+            ],
+            "legado": [
+                  "Advocacy for civil rights.",
+                  "The fight against racial segregation.",
+                  "A worldwide symbol of nonviolent resistance."
+            ]
+      },
+      "mandela": {
+            "nome": "Nelson Mandela",
+            "periodo": "1918 – 2013",
+            "resumo": "The struggle against apartheid.",
+            "texto": [
+                  "Nelson Mandela was one of the greatest symbols of the struggle against apartheid, the system of racial segregation in South Africa.",
+                  "Because of his political activities, he spent 27 years in prison. After his release, he took part in the negotiations that brought apartheid to an end.",
+                  "In 1994, he became South Africa’s first Black president elected in a democratic election."
+            ],
+            "legado": [
+                  "The struggle against apartheid.",
+                  "Advocacy for democracy.",
+                  "A worldwide symbol of resistance."
+            ]
+      },
+      "sankara": {
+            "nome": "Thomas Sankara",
+            "periodo": "1949 – 1987",
+            "resumo": "Revolution and African sovereignty.",
+            "texto": [
+                  "Thomas Sankara was the president of Burkina Faso and an important African political figure.",
+                  "He advocated the continent’s economic independence, the fight against corruption, and better living conditions for the population.",
+                  "He also supported policies focused on education, health care, and women’s rights."
+            ],
+            "legado": [
+                  "Advocacy for African sovereignty.",
+                  "The fight against corruption.",
+                  "Support for women’s rights."
+            ]
+      },
+      "ruby": {
+            "nome": "Ruby Bridges",
+            "periodo": "1954 – Present",
+            "resumo": "The fight against school segregation.",
+            "texto": [
+                  "Ruby Bridges became a symbol of the struggle against racial segregation in the United States when she was still a child.",
+                  "In 1960, at the age of six, Ruby was one of the first Black children to attend a school that had previously been reserved for white students.",
+                  "Despite facing racist protests and hostility, she continued attending school and became a symbol of the fight for civil rights."
+            ],
+            "legado": [
+                  "A symbol of school integration.",
+                  "An inspiration for inclusive education.",
+                  "A civil rights role model."
+            ]
+      },
+      "milton": {
+            "nome": "Milton Santos",
+            "periodo": "1926 – 2001",
+            "resumo": "Geography, territory, and globalization.",
+            "texto": [
+                  "Milton Santos was one of the greatest geographers in history and one of the most internationally recognized Brazilian intellectuals.",
+                  "His research examined territory, globalization, cities, and social inequalities.",
+                  "Milton Santos questioned how globalization could increase inequalities between different groups and countries."
+            ],
+            "legado": [
+                  "A transformation of geographical studies.",
+                  "Criticism of inequalities linked to globalization.",
+                  "International recognition in the field of geography."
+            ]
+      },
+      "assata": {
+            "nome": "Assata Shakur",
+            "periodo": "1947 – Present",
+            "resumo": "Activism and Black movements.",
+            "texto": [
+                  "Assata Shakur, born Joanne Chesimard, became a well-known activist associated with radical Black movements in the United States during the 1960s and 1970s.",
+                  "She took part in organizations and movements that fought racism and the violence experienced by Black people.",
+                  "Her story is controversial: she was convicted in a case related to a confrontation in New Jersey, challenged the accusations, and later escaped from prison. She was granted asylum in Cuba."
+            ],
+            "legado": [
+                  "An important figure in debates about Black movements.",
+                  "A political symbol for many activists.",
+                  "Her story raises debates about racism, justice, and state repression."
+            ]
+      },
+      "marie": {
+            "nome": "Marie Curie",
+            "periodo": "1867 – 1934",
+            "resumo": "A pioneer in radioactivity research.",
+            "texto": [
+                  "Marie Curie was born in Poland and moved to Paris to study at a time when few women had access to university education.",
+                  "She researched radioactivity and, together with Pierre Curie, discovered the elements polonium and radium.",
+                  "She was the first person to win two Nobel Prizes, in Physics (1903) and Chemistry (1911), and the first woman to receive a Nobel Prize."
+            ],
+            "legado": [
+                  "Opened doors for women in science.",
+                  "A foundation for research in physics and nuclear medicine.",
+                  "A worldwide example of dedication to research."
+            ]
+      },
+      "katherine": {
+            "nome": "Katherine Johnson",
+            "periodo": "1918 – 2020",
+            "resumo": "The mathematics behind NASA missions.",
+            "texto": [
+                  "Katherine Johnson was a Black American mathematician who worked at NASA during the era of racial segregation.",
+                  "Her trajectory calculations were essential to space missions, including John Glenn’s orbital flight in 1962.",
+                  "In 2015, she received the Presidential Medal of Freedom, the highest civilian honor in the United States."
+            ],
+            "legado": [
+                  "A role model for Black women in science.",
+                  "A decisive contribution to space exploration.",
+                  "An inspiration for mathematics education."
+            ]
+      },
+      "nise": {
+            "nome": "Nise da Silveira",
+            "periodo": "1905 – 1999",
+            "resumo": "Human-centered psychiatry and art.",
+            "texto": [
+                  "Nise da Silveira was born in the Brazilian state of Alagoas and was one of the few women in her medical school class.",
+                  "She opposed violent treatments such as lobotomy and electroshock therapy, and began using painting and modeling as forms of care for patients.",
+                  "Her work led to the creation of the Museum of Images of the Unconscious in Rio de Janeiro."
+            ],
+            "legado": [
+                  "A leading figure in the anti-asylum movement.",
+                  "Recognition of art as part of mental health care.",
+                  "A pioneer of Brazilian science."
+            ]
+      },
+      "hawking": {
+            "nome": "Stephen Hawking",
+            "periodo": "1942 – 2018",
+            "resumo": "Science beyond physical limitations.",
+            "texto": [
+                  "Stephen Hawking was a British theoretical physicist known for his studies of black holes and the origin of the universe.",
+                  "At the age of 21, he was diagnosed with amyotrophic lateral sclerosis (ALS), which gradually affected his ability to move. He later communicated using a speech synthesizer.",
+                  "He wrote “A Brief History of Time,” bringing physics to millions of readers."
+            ],
+            "legado": [
+                  "Science communication for the general public.",
+                  "Contributions to theoretical physics.",
+                  "A reminder that disability does not limit intellectual ability."
+            ]
+      },
+      "keller": {
+            "nome": "Helen Keller",
+            "periodo": "1880 – 1968",
+            "resumo": "Education and the rights of deafblind people.",
+            "texto": [
+                  "Helen Keller lost her hearing and sight as a baby after an illness.",
+                  "With the support of her teacher Anne Sullivan, she learned to communicate and became the first deafblind person to graduate from a university in the United States.",
+                  "A writer and lecturer, she devoted her life to defending the rights of people with disabilities and other social causes."
+            ],
+            "legado": [
+                  "Expanded discussions about inclusion and education.",
+                  "An internationally known author and activist.",
+                  "An inspiration for special education."
+            ]
+      },
+      "frida": {
+            "nome": "Frida Kahlo",
+            "periodo": "1907 – 1954",
+            "resumo": "Art, Mexican identity, and resilience.",
+            "texto": [
+                  "Frida Kahlo was a Mexican painter. She had polio as a child and, in 1925, was seriously injured in a bus accident that left her with pain for the rest of her life.",
+                  "During her recovery, she began painting, often creating self-portraits.",
+                  "Her work celebrates Mexico’s culture, colors, and traditions, while exploring identity, pain, and resistance."
+            ],
+            "legado": [
+                  "An icon of Latin American art.",
+                  "Celebration of Mexican culture.",
+                  "An inspiration for women and people with disabilities."
+            ]
+      },
+      "democracia": {
+            "nome": "Corinthians Democracy",
+            "periodo": "1982 – 1984",
+            "resumo": "Football, participation, and democracy.",
+            "texto": [
+                  "Corinthians Democracy was a movement formed within the Corinthians football club in the early 1980s, when Brazil was moving toward democracy after years of military dictatorship.",
+                  "The movement argued that players, employees, and club directors should collectively take part in important club decisions.",
+                  "Among its best-known members were Sócrates, Wladimir, and Walter Casagrande. Corinthians Democracy showed that football could also be a space for political participation and the defense of citizenship.",
+                  "The movement also became known for supporting Brazil’s return to democracy and the Diretas Já campaign for direct presidential elections."
+            ],
+            "legado": [
+                  "Collective participation in decision-making.",
+                  "Advocacy for democracy and freedom.",
+                  "Football as a space for social expression.",
+                  "One of the most important political movements in the history of Brazilian football."
+            ]
+      },
+      "malala": {
+            "nome": "Malala Yousafzai",
+            "periodo": "1997 – Present",
+            "resumo": "Advocacy for girls’ right to education.",
+            "texto": [
+                  "Malala Yousafzai is a Pakistani activist who advocates for girls’ right to education.",
+                  "From a young age, she spoke out against restrictions imposed on female students by the Taliban. In 2012, she was attacked because of her activism, but continued her work.",
+                  "In 2014, she received the Nobel Peace Prize, becoming the youngest person to receive the award."
+            ],
+            "legado": [
+                  "Advocacy for girls’ education.",
+                  "A symbol of courage and resistance.",
+                  "Promotion of equal opportunities."
+            ]
+      },
+      "rigoberta": {
+            "nome": "Rigoberta Menchú",
+            "periodo": "1959 – Present",
+            "resumo": "Indigenous rights and social justice.",
+            "texto": [
+                  "Rigoberta Menchú is a Guatemalan activist of Maya Indigenous origin, belonging to the K’iche’ people.",
+                  "She fights for Indigenous peoples’ rights, the preservation of their cultures, and an end to discrimination. During Guatemala’s civil war, her family and community faced persecution.",
+                  "In 1992, she received the Nobel Peace Prize for her work defending human rights and social justice."
+            ],
+            "legado": [
+                  "Advocacy for Indigenous peoples.",
+                  "Preservation of Indigenous cultures.",
+                  "An international reference in human rights."
+            ]
+      },
+      "mae": {
+            "nome": "Mae Jemison",
+            "periodo": "1956 – Present",
+            "resumo": "Physician, engineer, and astronaut.",
+            "texto": [
+                  "Mae Jemison is an American physician, engineer, and former astronaut.",
+                  "In 1992, she became the first Black woman to travel into space, taking part in a mission aboard the Space Shuttle Endeavour.",
+                  "After leaving NASA, she began encouraging science and technology education."
+            ],
+            "legado": [
+                  "A milestone in space exploration.",
+                  "Encouragement of science and technology.",
+                  "An inspiration for young scientists."
+            ]
+      },
+      "temple": {
+            "nome": "Temple Grandin",
+            "periodo": "1947 – Present",
+            "resumo": "Science, autism, and animal welfare.",
+            "texto": [
+                  "Temple Grandin is an autistic American scientist, professor, and author.",
+                  "She became known for her research and designs focused on the handling and welfare of livestock.",
+                  "She also gives talks and writes about autism, inclusion, and different ways of thinking, helping broaden understanding of the subject."
+            ],
+            "legado": [
+                  "Contributions to animal welfare.",
+                  "Public education about autism and inclusion.",
+                  "Recognition of different ways of thinking."
+            ]
+      },
+      "ada": {
+            "nome": "Ada Lovelace",
+            "periodo": "1815 – 1852",
+            "resumo": "A pioneer of computer programming.",
+            "texto": [
+                  "Ada Lovelace was a British mathematician and writer, considered one of the pioneers of computer programming.",
+                  "She studied the ideas behind the Analytical Engine designed by Charles Babbage and wrote an algorithm that could be carried out by the machine.",
+                  "Her work helped show that computers could perform operations beyond simple mathematical calculations."
+            ],
+            "legado": [
+                  "A pioneer of programming.",
+                  "A historical contribution to computing.",
+                  "An inspiration for women in technology."
+            ]
+      },
+      "turing": {
+            "nome": "Alan Turing",
+            "periodo": "1912 – 1954",
+            "resumo": "Mathematics and the foundations of computing.",
+            "texto": [
+                  "Alan Turing was a British mathematician, logician, and computer scientist.",
+                  "During World War II, he took part in efforts to decipher encrypted messages used by Nazi Germany.",
+                  "His ideas contributed to the development of modern computing and artificial intelligence, making him a key figure in the history of computer science."
+            ],
+            "legado": [
+                  "Theoretical foundations of computing.",
+                  "A contribution to wartime codebreaking.",
+                  "Influence on the development of artificial intelligence."
+            ]
+      },
+      "santos": {
+            "nome": "Santos Dumont",
+            "periodo": "1873 – 1932",
+            "resumo": "A Brazilian aviation pioneer.",
+            "texto": [
+                  "Alberto Santos Dumont was a Brazilian inventor and aviator who made important contributions to the development of airships and aircraft.",
+                  "In 1906, he made a public flight in Paris with the 14-bis, considered a milestone in the history of aviation.",
+                  "He devoted his life to experimenting with and improving flying machines."
+            ],
+            "legado": [
+                  "Pioneering work in aviation.",
+                  "The historic achievement of the 14-bis.",
+                  "A symbol of Brazilian inventiveness."
+            ]
+      },
+      "bob": {
+            "nome": "Bob Marley",
+            "periodo": "1945 – 1981",
+            "resumo": "Reggae, Jamaican culture, and messages of peace.",
+            "texto": [
+                  "Bob Marley was a Jamaican singer and songwriter who helped make reggae popular around the world.",
+                  "His music addressed peace, freedom, inequality, and resistance to oppression, while also sharing aspects of Jamaican culture and the Rastafari movement.",
+                  "Songs such as “One Love” became symbols of unity and hope, and his legacy continues to influence musicians in many countries."
+            ],
+            "legado": [
+                  "Helped popularize reggae worldwide.",
+                  "Messages of peace and freedom.",
+                  "Shared Jamaican culture with the world."
+            ]
+      },
+      "hayao": {
+            "nome": "Hayao Miyazaki",
+            "periodo": "1941 – Present",
+            "resumo": "Animation, fantasy, and Japanese culture.",
+            "texto": [
+                  "Hayao Miyazaki is a Japanese director, screenwriter, and animator, and a co-founder of Studio Ghibli.",
+                  "He is known for films that combine fantasy, Japanese culture, nature, and reflections on society, such as My Neighbor Totoro, Spirited Away, and Howl’s Moving Castle.",
+                  "His works are recognized for their rich visuals and their themes of friendship, respect for nature, and growing up."
+            ],
+            "legado": [
+                  "A worldwide reference in animation.",
+                  "Celebration of Japanese culture.",
+                  "Stories about nature and humanity."
+            ]
+      },
+      "miriam": {
+            "nome": "Miriam Makeba",
+            "periodo": "1932 – 2008",
+            "resumo": "African music and the struggle against apartheid.",
+            "texto": [
+                  "Miriam Makeba was a South African singer known internationally as “Mama Africa.”",
+                  "She used her music to share African culture and speak out against apartheid. Because she opposed the segregationist regime, she spent many years outside South Africa.",
+                  "Alongside her musical career, she became an important activist against racism and in defense of human rights."
+            ],
+            "legado": [
+                  "Promoted African music and culture.",
+                  "Activism against apartheid.",
+                  "Advocacy for human rights."
+            ]
+      }
+};
+
     const temas = { todos: 'All', cultural: 'Cultural diversity', racial: 'Racial diversity', ciencia: 'Women in science', pcd: 'People with disabilities', profissoes: 'Different professions', culturas: 'Different cultures' };
-    const porTema = { cultural: ['racionais', 'democracia', 'frida', 'milton', 'sankara'], racial: ['malcolm', 'king', 'mandela', 'angela', 'ruby', 'assata', 'racionais', 'sankara', 'milton', 'katherine'], ciencia: ['marie', 'katherine', 'nise'], pcd: ['hawking', 'keller', 'frida'], profissoes: ['milton', 'marie', 'katherine', 'nise', 'hawking', 'king', 'angela', 'brizola', 'racionais', 'democracia'], culturas: ['mandela', 'sankara', 'frida', 'racionais', 'marie', 'malcolm'] };
+
+    const porTema = { cultural: ['racionais', 'democracia', 'frida', 'milton', 'sankara', 'malala', 'rigoberta'], racial: ['malcolm', 'king', 'mandela', 'angela', 'ruby', 'assata', 'racionais', 'sankara', 'milton', 'katherine', 'rigoberta', 'miriam'], ciencia: ['marie', 'katherine', 'nise', 'mae'], pcd: ['hawking', 'keller', 'frida', 'temple'], profissoes: ['milton', 'marie', 'katherine', 'nise', 'hawking', 'king', 'angela', 'brizola', 'racionais', 'democracia', 'ada', 'turing', 'santos', 'mae', 'temple'], culturas: ['mandela', 'sankara', 'frida', 'racionais', 'marie', 'malcolm', 'bob', 'hayao', 'miriam', 'rigoberta'] };
+
+
 
     const $ = id => document.getElementById(id);
+
     const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
     const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
     const temasDe = id => Object.keys(porTema).filter(t => porTema[t].includes(id));
+
     const tag = (t, cls = 'bg-vinho/10 text-vinho') => `<span class="text-xs font-semibold rounded-full px-3 py-1 ${cls}">${temas[t]}</span>`;
+
     let temaAtual = 'todos';
 
+
+
     function renderCards() {
+
       const q = norm($('busca').value.trim());
+
       const base = temaAtual === 'todos' ? Object.keys(historias) : porTema[temaAtual];
+
       const ids = base.filter(id => { const h = historias[id]; return !q || norm(h.nome + ' ' + h.resumo + ' ' + h.texto.join(' ')).includes(q) });
+
       $('cards').innerHTML = ids.map(id => {
+
         const h = historias[id];
+
         return `<button type="button" onclick="mostrarHistoria('${id}')" class="fade text-left bg-white rounded-xl overflow-hidden shadow-lg border-b-[5px] border-vinho transition duration-300 hover:-translate-y-2 hover:bg-[#fff8e8]"><div class="w-full h-44 bg-gradient-to-br from-[#111] to-vinho flex items-center justify-center text-ouro font-serif text-6xl" aria-hidden="true">${esc(h.nome[0])}</div><div class="p-5"><h3 class="text-vinho font-bold">${esc(h.nome)}</h3><p class="text-xs text-gray-500 mb-2">${h.periodo}</p><p class="text-sm text-gray-600 leading-normal">${h.resumo}</p></div></button>`;
+
       }).join('');
+
       $('vazio').classList.toggle('hidden', ids.length > 0);
+
       $('contagem').textContent = ids.length + (ids.length === 1 ? ' story' : ' stories');
+
     }
+
     function selecionarTema(tema, rolar = true) {
+
       temaAtual = tema;
+
       document.querySelectorAll('#temas button').forEach(b => {
+
         const ativo = b.dataset.tema === tema;
+
         b.setAttribute('aria-pressed', ativo);
+
         b.className = 'px-5 py-2 rounded-full font-semibold text-sm border-2 transition-colors duration-300 ' + (ativo ? 'bg-ouro border-ouro text-[#111]' : 'border-white/40 text-white hover:border-ouro hover:text-ouro');
+
       });
+
       renderCards();
+
       $('historia').classList.add('hidden');
+
       if (rolar) $('escolha').scrollIntoView();
+
     }
+
     $('temas').innerHTML = Object.entries(temas).map(([id, nome]) => {
+
       const n = id === 'todos' ? Object.keys(historias).length : porTema[id].length;
+
       return `<button type="button" data-tema="${id}" onclick="selecionarTema('${id}')">${nome} <span class="opacity-70">(${n})</span></button>`;
+
     }).join('');
+
     $('busca').addEventListener('input', renderCards);
 
+
+
     function mostrarHistoria(id, atualizaHash = true) {
+
       const h = historias[id]; if (!h) return;
+
       const ids = Object.keys(historias), i = ids.indexOf(id);
+
       $('nome').textContent = h.nome;
+
       $('periodo').textContent = h.periodo;
+
       $('tags').innerHTML = temasDe(id).map(t => tag(t)).join('');
+
       $('conteudo').innerHTML = h.texto.map(p => `<p class="text-[1.05rem] leading-[1.9] mb-5">${esc(p)}</p>`).join('')
+
         + `<h3 class="text-vinho font-bold text-lg mt-8 mb-4">Legacy</h3><ul class="list-disc pl-6 leading-loose">${h.legado.map(l => `<li>${esc(l)}</li>`).join('')}</ul>`;
+
       const rel = [...new Set(temasDe(id).flatMap(t => porTema[t]))].filter(x => x !== id).slice(0, 4);
-      $('relacionados').innerHTML = rel.length ? `<h3 class="text-vinho font-bold text-lg mb-4">See also</h3><div class="flex flex-wrap gap-3">${rel.map(r => `<button type="button" onclick="mostrarHistoria('${r}')" class="px-4 py-2 rounded-full border-2 border-vinho text-vinho font-semibold text-sm hover:bg-vinho hover:text-white transition">${esc(historias[r].nome)}</button>`).join('')}</div>` : '';
+
+      $('relacionados').innerHTML = rel.length ? `<h3 class="text-vinho font-bold text-lg mb-4">Explore related stories</h3><div class="flex flex-wrap gap-3">${rel.map(r => `<button type="button" onclick="mostrarHistoria('${r}')" class="px-4 py-2 rounded-full border-2 border-vinho text-vinho font-semibold text-sm hover:bg-vinho hover:text-white transition">${esc(historias[r].nome)}</button>`).join('')}</div>` : '';
+
       const a = ids[(i - 1 + ids.length) % ids.length], p = ids[(i + 1) % ids.length];
+
       $('ant').textContent = '← ' + historias[a].nome; $('ant').onclick = () => mostrarHistoria(a);
+
       $('prox').textContent = historias[p].nome + ' →'; $('prox').onclick = () => mostrarHistoria(p);
+
       document.title = h.nome + ' | Stories That Changed the World';
+
       $('historia').classList.remove('hidden');
+
       $('historia').scrollIntoView();
+
       $('nome').focus({ preventScroll: true });
+
       if (atualizaHash && location.hash !== '#' + id) history.pushState(null, '', '#' + id);
+
     }
+
     function voltar() {
+
       $('historia').classList.add('hidden');
+
       document.title = 'Stories That Changed the World';
+
       if (location.hash) history.pushState(null, '', location.pathname + location.search);
+
       $('escolha').scrollIntoView();
+
     }
+
     function rotear() {
+
       const id = location.hash.slice(1);
+
       if (historias[id]) mostrarHistoria(id, false);
+
       else if (!$('historia').classList.contains('hidden')) { $('historia').classList.add('hidden'); document.title = 'Stories That Changed the World' }
+
     }
+
     window.addEventListener('hashchange', rotear);
+
     selecionarTema('todos', false);
+
     rotear();
+
   </script>
+
 </body>
+
+
 
 </html>
