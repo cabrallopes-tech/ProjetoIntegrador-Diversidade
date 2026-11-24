@@ -173,6 +173,12 @@ body { background: var(--paper); }
         <a href="#about" class="hover:text-orangex">About</a>
     </div>
 
+    <!-- LANGUAGE BUTTON -->
+    <a href="index.html" hreflang="pt-BR" aria-label="Mudar para português"
+        class="border border-white/40 hover:bg-white hover:text-dark px-3 py-1 text-xs font-bold tracking-widest transition">
+        PT
+    </a>
+
     <button onclick="toggleMenu()" class="md:hidden text-2xl">☰</button>
 </nav>
 
@@ -1231,9 +1237,43 @@ document.querySelectorAll("#mobileMenu a").forEach(link => {
 // INITIALIZATION
 // ======================================
 
+// ======================================
+// FOTOS (carregadas da Wikipédia)
+// ======================================
+
+const wikiTitles = [
+"Chico_Mendes","Malcolm_X","Angela_Davis","Martin_Luther_King_Jr.","Nelson_Mandela","Marielle_Franco",
+"Rosa_Parks","Greta_Thunberg","Wangari_Maathai","Ailton_Krenak","Dorothy_Stang","Rigoberta_Menchú",
+"Harvey_Milk","Malala_Yousafzai","Marie_Curie","Katherine_Johnson","Mae_Jemison","Stephen_Hawking",
+"Helen_Keller","Temple_Grandin","Ada_Lovelace","Alan_Turing","Alberto_Santos-Dumont","Milton_Santos",
+"Frida_Kahlo","Bob_Marley","Hayao_Miyazaki","Miriam_Makeba"
+];
+
+async function loadImages() {
+
+    await Promise.all(personalities.map(async (person, i) => {
+        try {
+            const res = await fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + encodeURIComponent(wikiTitles[i]));
+            if (!res.ok) return;
+            const data = await res.json();
+            if (data.thumbnail && data.thumbnail.source) person.image = data.thumbnail.source;
+        } catch (e) {}
+    }));
+
+    renderGallery();
+
+    const spotlight = document.querySelector("#spotlight img, #destaque img");
+    if (spotlight) {
+        spotlight.src = personalities[0].image;
+        spotlight.style.display = "";
+        if (spotlight.nextElementSibling) spotlight.nextElementSibling.style.display = "none";
+    }
+}
+
 createFilters();
 renderGallery();
 renderTimeline();
+loadImages();
 
 </script>
 
